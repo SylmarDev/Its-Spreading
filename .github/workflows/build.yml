@@ -7,9 +7,6 @@ on:
 jobs:
   Godot:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./godot
     strategy:
       matrix:
         platform: [windows]
@@ -28,4 +25,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Client - ${{ matrix.platform }}
-          path: godot/
+          path: ${{ github.workspace }}/${{ steps.build.outputs.build }}
