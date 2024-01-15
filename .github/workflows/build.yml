@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        platform: windows
+        platform: [windows]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -19,7 +19,7 @@ jobs:
         uses: manleydev/build-godot-action@v1.4.1
         with:
           name: example
-          preset: windows
+          preset: ${{ matrix.platform }}
           debugMode: "true"
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
