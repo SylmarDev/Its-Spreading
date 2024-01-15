@@ -7,6 +7,9 @@ on:
 jobs:
   Godot:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./godot
     strategy:
       matrix:
         platform: [windows]
@@ -21,14 +24,8 @@ jobs:
           name: example
           preset: ${{ matrix.platform }}
           debugMode: "true"
-      - name: Make dir
-        run: |
-          # Your build commands here
-          # For example, if artifacts are in the 'build' directory:
-          mkdir -p ${{ github.workspace }}/${{ steps.build.outputs.build }}
-          echo hello > ${{ github.workspace }}/${{ steps.build.outputs.build }}world.txt
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: Client - ${{ matrix.platform }}
-          path: ${{ github.workspace }}/${{ steps.build.outputs.build }}
+          path: godot/
