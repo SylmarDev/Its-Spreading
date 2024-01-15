@@ -26,7 +26,7 @@ jobs:
           # Your build commands here
           # For example, if artifacts are in the 'build' directory:
           mkdir -p ${{ github.workspace }}/${{ steps.build.outputs.build }}
-          echo hello > ${{ github.workspace }}/${{ steps.build.outputs.build }}/world.txt
+          echo hello > ${{ github.workspace }}/${{ steps.build.outputs.build }}world.txt
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
