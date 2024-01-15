@@ -21,8 +21,14 @@ jobs:
           name: example
           preset: ${{ matrix.platform }}
           debugMode: "true"
+      - name: Make dir
+        run: |
+          # Your build commands here
+          # For example, if artifacts are in the 'build' directory:
+          mkdir -p /artifact_home
+          echo hello > /artifact_home/world.txt
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: Client - ${{ matrix.platform }}
-          path: ${{ github.workspace }}/${{ steps.build.outputs.build }}
+          path: /artifact_home
