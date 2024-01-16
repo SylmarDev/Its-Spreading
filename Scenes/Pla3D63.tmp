@@ -26,5 +26,3 @@ position = Vector2(11, 3)
 scale = Vector2(0.0566406, 0.0566406)
 texture = ExtResource("1_dnkw2")
 script = ExtResource("3_5b24r")
-
-[node name="Marker2D" type="Marker2D" parent="GunSpr"]
