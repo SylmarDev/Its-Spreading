@@ -55,8 +55,6 @@ func rotateShip() -> void:
 	var currentRotation = normalizeAngle(rotation_degrees)
 	var destRotation = normalizeAngle(shipAngleTo)
 	
-	print("cr: %.02f dr: %.02f" % [currentRotation, destRotation])
-	
 	if abs(currentRotation - destRotation) > abs((currentRotation + 360) - destRotation):
 		destRotation -= 360.0
 	elif abs(currentRotation - destRotation) > abs(currentRotation - (destRotation + 360)):
