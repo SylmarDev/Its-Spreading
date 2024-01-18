@@ -10,14 +10,22 @@ var motion: Vector2
 var axis: Vector2
 var prevAngle: float
 
+var shipAngleTo: float = 0.0
+var turnSpeed: float = 0.05 # float between 0 and 1 iirc
+
 func _physics_process(delta):
 	axis = get_input()
 	if axis == Vector2.ZERO:
 		if velocity.length() > (friction * delta):
+			rotateShip()
 			velocity -= velocity.normalized() * (friction * delta)
 		else:
 			velocity = Vector2.ZERO
 	else:
+		# ship rotation
+		setShipAngleTo(axis)
+		rotateShip()
+		
 		velocity += axis * ACCEL * delta
 		velocity = velocity.limit_length(MAX_SPEED)
 	
@@ -38,3 +46,26 @@ func get_input():
 	
 	return axis.normalized()
 	
+func setShipAngleTo(v: Vector2) -> void:
+	shipAngleTo = rad_to_deg(v.angle()) + 90
+	
+# this might need more touch ups but for now its very good
+# this is as good as I'm going to get it
+func rotateShip() -> void:
+	var currentRotation = normalizeAngle(rotation_degrees)
+	var destRotation = normalizeAngle(shipAngleTo)
+	
+	print("cr: %.02f dr: %.02f" % [currentRotation, destRotation])
+	
+	if abs(currentRotation - destRotation) > abs((currentRotation + 360) - destRotation):
+		destRotation -= 360.0
+	elif abs(currentRotation - destRotation) > abs(currentRotation - (destRotation + 360)):
+		destRotation += 360.0
+	
+	rotation_degrees = (lerp(currentRotation, destRotation, turnSpeed))
+
+func normalizeAngle(a: float) -> float:
+	while a < 0: # is negative
+		a += 360
+	
+	return fmod(a, 360.0)

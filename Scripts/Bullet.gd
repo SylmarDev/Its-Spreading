@@ -14,7 +14,7 @@ func _ready():
 
 func _process(delta):
 	position += (Vector2.RIGHT*speed).rotated(rotation) * delta
-	speed = lerp(speed, 300.0, 0.1)
+	speed = lerp(speed, 200.0, 0.01)
 
 
 func _on_visible_on_screen_enabler_2d_screen_exited():

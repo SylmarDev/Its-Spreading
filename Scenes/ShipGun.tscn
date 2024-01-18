@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://g4l7rvfg05hk"]
+
+[ext_resource type="Texture2D" uid="uid://co05a76a8cdq2" path="res://icon.svg" id="1_4j8ut"]
+[ext_resource type="Script" path="res://Scripts/ShipGun.gd" id="2_w0ogd"]
+
+[node name="ShipGun" type="Node2D"]
+script = ExtResource("2_w0ogd")
+
+[node name="GunSpr" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+show_behind_parent = true
+position = Vector2(-9.53674e-07, -7.15256e-07)
+scale = Vector2(0.0566406, 0.0566406)
+texture = ExtResource("1_4j8ut")
+
+[node name="Marker2D" type="Marker2D" parent="GunSpr"]
+position = Vector2(1.68373e-05, -52.9655)

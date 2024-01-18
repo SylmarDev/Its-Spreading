@@ -20,11 +20,7 @@ texture = ExtResource("1_dnkw2")
 shape = SubResource("RectangleShape2D_e2wjw")
 
 [node name="ShipGun" parent="." instance=ExtResource("3_353p8")]
-z_index = -1
 position = Vector2(10, 3)
-startPos = Vector2(10, 3)
 
 [node name="ShipGun2" parent="." instance=ExtResource("3_353p8")]
-z_index = -1
-position = Vector2(-10, 3)
-startPos = Vector2(-10, 3)
+position = Vector2(-11, 3)
