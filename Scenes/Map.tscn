@@ -6,7 +6,7 @@
 metadata/_edit_lock_ = true
 
 [node name="Player" parent="." instance=ExtResource("1_gcw1n")]
-position = Vector2(81, 67)
+position = Vector2(160, 90)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(160, 90)

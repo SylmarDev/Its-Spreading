@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://co05a76a8cdq2" path="res://icon.svg" id="1_dnkw2"]
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_us242"]
-[ext_resource type="PackedScene" uid="uid://g4l7rvfg05hk" path="res://Scenes/ShipGun.tscn" id="3_353p8"]
+[ext_resource type="Script" path="res://Scripts/ShipGun.gd" id="3_5b24r"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2wjw"]
 size = Vector2(16, 16)
@@ -19,12 +19,14 @@ texture = ExtResource("1_dnkw2")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_e2wjw")
 
-[node name="ShipGun" parent="." instance=ExtResource("3_353p8")]
-z_index = -1
-position = Vector2(10, 3)
-startPos = Vector2(10, 3)
+[node name="GunSpr" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+show_behind_parent = true
+position = Vector2(11, 3)
+scale = Vector2(0.0566406, 0.0566406)
+texture = ExtResource("1_dnkw2")
+script = ExtResource("3_5b24r")
 
-[node name="ShipGun2" parent="." instance=ExtResource("3_353p8")]
-z_index = -1
-position = Vector2(-10, 3)
-startPos = Vector2(-10, 3)
+[node name="Marker2D" type="Marker2D" parent="GunSpr"]
+position = Vector2(0, -70.6207)
+scale = Vector2(17.6552, 17.6552)
