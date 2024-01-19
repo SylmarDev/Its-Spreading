@@ -26,13 +26,14 @@ func shootBullet():
 	
 	var bullet_instance = bullet.instantiate()
 	bullet_instance.rotation = shotAngle
+	# TODO: marker2d pos not always at tip of gun
 	bullet_instance.global_position = $GunSpr/Marker2D.global_position
 	
 	add_child(bullet_instance)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	position = get_parent().position + startPos
+	position = get_parent().position + startPos.rotated(get_parent().rotation)
 	look_at(get_global_mouse_position())
 	if (Input.is_action_pressed("mb_left") and gunReady):
 		shootBullet()

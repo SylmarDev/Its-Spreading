@@ -13,7 +13,7 @@ func _ready():
 	#scale.x = max(1, speed / sprite_width)
 
 func _process(delta):
-	position += (Vector2.RIGHT*speed).rotated(rotation) * delta
+	position += (Vector2.RIGHT * speed).rotated(rotation) * delta
 	speed = lerp(speed, 200.0, 0.01)
 
 
