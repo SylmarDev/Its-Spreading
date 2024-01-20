@@ -34,17 +34,9 @@ func _physics_process(delta):
 	
 func get_input():
 	var axis = Vector2.ZERO
+	axis = Input.get_vector("left", "right", "up", "down")
 	
-	if Input.is_action_pressed("down"):
-		axis.y += 1
-	if Input.is_action_pressed("up"):
-		axis.y -= 1
-	if Input.is_action_pressed("right"):
-		axis.x += 1
-	if Input.is_action_pressed("left"):
-		axis.x -= 1
-	
-	return axis.normalized()
+	return axis
 	
 func setShipAngleTo(v: Vector2) -> void:
 	shipAngleTo = rad_to_deg(v.angle()) + 90
