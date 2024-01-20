@@ -28,6 +28,7 @@ func shootBullet():
 	bullet_instance.rotation = shotAngle
 	# TODO: marker2d pos not always at tip of gun
 	bullet_instance.global_position = $GunSpr/Marker2D.global_position
+	bullet_instance.thingsIHit = ["Rot", "Enemy"]
 	
 	add_child(bullet_instance)
 
