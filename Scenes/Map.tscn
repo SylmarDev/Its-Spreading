@@ -11,9 +11,9 @@ size = Vector2(24, 2855.5)
 [node name="Player" parent="." instance=ExtResource("1_gcw1n")]
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-limit_left = -1300
+limit_left = -1290
 limit_top = -730
-limit_right = 1300
+limit_right = 1290
 limit_bottom = 730
 limit_smoothed = true
 position_smoothing_enabled = true
