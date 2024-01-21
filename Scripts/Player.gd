@@ -2,9 +2,9 @@ extends CharacterBody2D
 
 @onready var coll = $CollisionShape2D
 
-var MAX_SPEED = 100
+var MAX_SPEED = 400 # 100 originally
 var ACCEL = 375
-var friction = 150
+var friction = 5 # 150 originally
 
 var motion: Vector2
 var axis: Vector2

@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://c615o4buyjjii"]
+
+[ext_resource type="Script" path="res://Scripts/Rot.gd" id="1_vtuyo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2i5ta"]
+size = Vector2(4, 4)
+
+[node name="Area2D" type="Area2D"]
+script = ExtResource("1_vtuyo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_2i5ta")
+debug_color = Color(0.317647, 0.623529, 0, 0.419608)
