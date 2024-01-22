@@ -12,7 +12,7 @@ var mapY: int
 func _ready():
 	#var dim = [shape.shape.size[0], shape.shape.size[1]]
 	parent = get_parent()
-	print("x: %s  y:%s" % [str(mapX), str(mapY)])
+	#print("x: %s  y:%s" % [str(mapX), str(mapY)]) # DEBUG
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

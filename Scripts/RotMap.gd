@@ -114,8 +114,63 @@ func resetEdges() -> void:
 				rotTileRow[len(rotTileRow)-1] = createRotInst(i, len(rotTileRow)-1)
 		i += 1
 
+func setRotTileArr(arr: Array, coords: Array) -> Array:
+	var returnArr = arr
+	arr[coords[1]] = createRotInst(coords[0], coords[1])
+	
+	return returnArr
+	
+
 func spreadRot() -> void:
-	pass
+	var willSpreadThisTick = randi_range(0, 9) < 9
+	if willSpreadThisTick:
+		var i = 0
+		var q = 0
+		var spreadRotTo = [] # arr of Vector2's that will get rot (ROT GRID NOT COORDS)
+		var chance = 9
+		
+		#region Determine where rot goes
+		while i < len(rotTiles):
+			q = 0
+			while q < len(rotTiles[i]):
+				# skip if no rot in tile
+				var rt = rotTiles[i][q]
+				if rotTiles[i][q] == null:
+					q += 1
+					continue
+				
+				if i != 0 and i != len(rotTiles)-1:
+					# check left
+					if q != 0 and rotTiles[i][q-1] == null:
+						if randi_range(0, 9) < chance:
+							spreadRotTo.append([i, q-1])
+							
+					# check right
+					if q != len(rotTiles[i])-1 and rotTiles[i][q+1] == null:
+						if randi_range(0, 9) < chance:
+							spreadRotTo.append([i, q+1])
+				
+				if q != 0 and q != len(rotTiles[i])-1:
+					# check up
+					if i != 0 and rotTiles[i-1][q] == null:
+						if randi_range(0, 9) < chance:
+							spreadRotTo.append([i-1, q])
+					
+					# check down
+					if i != len(rotTiles)-1 and rotTiles[i+1][q] == null:
+						if randi_range(0, 9) < chance:
+							spreadRotTo.append([i+1, q])
+				
+				
+				q += 1
+			i += 1
+		#endregion
+		
+		# spread rot there
+		for coords in spreadRotTo:
+			if rotTiles[coords[0]][coords[1]] == null:
+				rotTiles[coords[0]][coords[1]] = createRotInst(coords[0], coords[1])
+				#rotTiles[coords[0]] = setRotTileArr(rotTiles[0], coords)
 
 func deleteRotAtCoords(x: int, y: int) -> void:
 	rotTiles[x][y] = null
@@ -125,7 +180,10 @@ func deleteRotAtCoords(x: int, y: int) -> void:
 func _process(delta):
 	timer += 1
 	if timer > timerRuns:
-		resetEdges()
+		spreadRot()
+		
+		if needsResetEdges:
+			resetEdges()
 		timer = 0
 	#resetEdges()
 	#spreadRot()
