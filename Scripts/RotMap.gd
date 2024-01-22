@@ -132,7 +132,7 @@ func setRotTileArr(arr: Array, coords: Array) -> Array:
 	
 
 func spreadRot() -> void:
-	var willSpreadThisTick = randi_range(0, 9) < 5
+	var willSpreadThisTick = randi_range(0, 9) < 8
 	if willSpreadThisTick:
 		var i = 0
 		var q = 0
@@ -142,14 +142,17 @@ func spreadRot() -> void:
 		
 		#region Determine where rot goes
 		while i < len(rotTiles):
-			if rotTiles[i].all(func(n): return n != null) and \
-				i != 0 and i != len(rotTiles)-1:
+			var rowFilled = rotTiles[i].all(func(n): return n != null) and \
+				i != 0 and i != len(rotTiles)-1
+			if rowFilled or \
+					(i == 0 and rotTiles[1].all(func(n): return n != null)) or \
+					(i == len(rotTiles)-1 and rotTiles[len(rotTiles)-2].all(func(n): return n != null)):
 				i += 1
 				continue
 			q = 0
 			while q < len(rotTiles[i]):
 				# skip chance, if no rot in tile, or if surrounded by rot
-				if randf_range(0.0, 9.0) < percentToCheck or \
+				if  percentToCheck < randf_range(0.0, 9.0) or \
 								rotTiles[i][q] == null or \
 								(i == 0 or rotTiles[i-1][q] != null) and \
 										(i == len(rotTiles)-1 or rotTiles[i+1][q] != null) and \
@@ -193,7 +196,9 @@ func spreadRot() -> void:
 
 func deleteRotAtCoords(x: int, y: int) -> void:
 	rotTiles[x][y] = null
-	needsResetEdges = true
+	
+	if (x == 0 or y == 0 or x == len(rotTiles)-1 or y == len(rotTiles)-1):
+		needsResetEdges = true
 
 # set volumeTo
 func setVolumeTo(playerRotCount: int) -> void:
