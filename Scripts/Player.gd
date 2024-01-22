@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @onready var coll = $CollisionShape2D
+@onready var hearing = $Hearing
 
 var MAX_SPEED = 400 # 100 originally
 var ACCEL = 375
@@ -59,3 +60,10 @@ func normalizeAngle(a: float) -> float:
 		a += 360
 	
 	return fmod(a, 360.0)
+
+func rotCount() -> int:
+	var rotCount = 0
+	for area in hearing.get_overlapping_areas():
+		if (area.has_method("isRot")):
+			rotCount += 1
+	return rotCount

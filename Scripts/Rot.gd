@@ -21,3 +21,6 @@ func _process(delta):
 func hitBy(object):
 	parent.deleteRotAtCoords(mapX, mapY)
 	queue_free()
+
+func isRot() -> bool:
+	return true

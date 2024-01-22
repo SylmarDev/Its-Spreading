@@ -8,12 +8,16 @@ var rotTiles: Array
 var rotDiff: Vector2 # amt the center is off
 
 @onready var rot = preload("res://Scenes/Rot.tscn")
-var rotDim: Vector2 = Vector2(4, 4) # hardcoded for now sue me (Idk if we can get dimensions before instaniating it
+var rotDim: Vector2 = Vector2(8, 8) # hardcoded for now sue me (Idk if we can get dimensions before instaniating it
 
 var timer = 0
 var timerRuns = 120 # how many frames the timer waits before running to spread
 
 var needsResetEdges: bool = false
+
+@onready var audioStreamPlayer = $AudioStreamPlayer
+@onready var player = get_node("../Player")
+var volumeTo: float = -80.0 # float for volume range from -80 to 10 db
 
 func getArrayPlusY(arr: Array, yVal: int) -> Array:
 	var returnArr = []
@@ -94,6 +98,12 @@ func _ready():
 		rotTiles[i] = createRotArr(i, len(rotTiles[i]), allFilled, !allFilled)
 		i += 1
 	#endregion
+	
+	# audio stream player
+	audioStreamPlayer.autoplay = true
+	audioStreamPlayer.volume_db = volumeTo
+	audioStreamPlayer.play()
+	
 
 func resetEdges() -> void:
 	var i = 0
@@ -122,20 +132,29 @@ func setRotTileArr(arr: Array, coords: Array) -> Array:
 	
 
 func spreadRot() -> void:
-	var willSpreadThisTick = randi_range(0, 9) < 9
+	var willSpreadThisTick = randi_range(0, 9) < 5
 	if willSpreadThisTick:
 		var i = 0
 		var q = 0
 		var spreadRotTo = [] # arr of Vector2's that will get rot (ROT GRID NOT COORDS)
-		var chance = 9
+		var percentToCheck = 1.0 # 10%
+		var chance = 7
 		
 		#region Determine where rot goes
 		while i < len(rotTiles):
+			if rotTiles[i].all(func(n): return n != null) and \
+				i != 0 and i != len(rotTiles)-1:
+				i += 1
+				continue
 			q = 0
 			while q < len(rotTiles[i]):
-				# skip if no rot in tile
-				var rt = rotTiles[i][q]
-				if rotTiles[i][q] == null:
+				# skip chance, if no rot in tile, or if surrounded by rot
+				if randf_range(0.0, 9.0) < percentToCheck or \
+								rotTiles[i][q] == null or \
+								(i == 0 or rotTiles[i-1][q] != null) and \
+										(i == len(rotTiles)-1 or rotTiles[i+1][q] != null) and \
+										(q == 0 or rotTiles[i][q-1] != null) and \
+										(q == len(rotTiles[i])-1 or rotTiles[i][q+1] != null):
 					q += 1
 					continue
 				
@@ -176,9 +195,17 @@ func deleteRotAtCoords(x: int, y: int) -> void:
 	rotTiles[x][y] = null
 	needsResetEdges = true
 
+# set volumeTo
+func setVolumeTo(playerRotCount: int) -> void:
+	playerRotCount = clamp(playerRotCount, 0, 100)
+	#  -20 to 5 db
+	volumeTo = ((playerRotCount / 100) * 25) - 20
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	timer += 1
+	audioStreamPlayer.volume_db = lerp(audioStreamPlayer.volume_db, volumeTo, 0.025)
+	setVolumeTo(player.rotCount())
 	if timer > timerRuns:
 		spreadRot()
 		
