@@ -33,6 +33,7 @@ position = Vector2(-10, 3)
 startPos = Vector2(-10, 3)
 
 [node name="Hearing" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hearing"]
 shape = SubResource("CircleShape2D_pyrgb")

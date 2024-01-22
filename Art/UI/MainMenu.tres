@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://dhqrhfql4mvym"]
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://dhqrhfql4mvym"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7bnd5"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -11,6 +11,14 @@ border_color = Color(0.870588, 0.823529, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jbe7"]
 bg_color = Color(0.32549, 0.643137, 0.784314, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wir4b"]
+bg_color = Color(0.752941, 0.180392, 0.364706, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [resource]
 Button/styles/focus = SubResource("StyleBoxFlat_7bnd5")
 Panel/styles/panel = SubResource("StyleBoxFlat_1jbe7")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_wir4b")

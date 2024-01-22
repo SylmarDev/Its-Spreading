@@ -24,3 +24,7 @@ func hitBy(object):
 
 func isRot() -> bool:
 	return true
+
+func _on_body_entered(body):
+	if body.name == "Player":
+		body.hurt(0.2) # 2 for now

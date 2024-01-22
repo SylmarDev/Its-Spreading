@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://dci5eckwmtjeu"]
+[gd_scene load_steps=8 format=3 uid="uid://dci5eckwmtjeu"]
 
 [ext_resource type="Script" path="res://Scripts/Map.gd" id="1_c3sva"]
 [ext_resource type="PackedScene" uid="uid://ck2k1mk36x578" path="res://Scenes/Player.tscn" id="1_gcw1n"]
 [ext_resource type="Script" path="res://Scripts/RotMap.gd" id="3_30lau"]
 [ext_resource type="AudioStream" uid="uid://4dms7aw2lpl4" path="res://Sounds/beans_texture.mp3" id="4_p1ay6"]
+[ext_resource type="Theme" uid="uid://dhqrhfql4mvym" path="res://Art/UI/MainMenu.tres" id="5_db17u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2b7o"]
 size = Vector2(2556, 1436)
@@ -63,3 +64,14 @@ script = ExtResource("3_30lau")
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="RotMap"]
 stream = ExtResource("4_p1ay6")
 volume_db = 1.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer"]
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 113.0
+offset_bottom = 15.0
+theme = ExtResource("5_db17u")
+value = 100.0
+show_percentage = false

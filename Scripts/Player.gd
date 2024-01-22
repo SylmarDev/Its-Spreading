@@ -14,6 +14,11 @@ var prevAngle: float
 var shipAngleTo: float = 0.0
 var turnSpeed: float = 0.05 # float between 0 and 1 iirc
 
+var MAX_HEALTH = 100.0
+var health = 100.0
+
+var healthbar
+
 func _physics_process(delta):
 	axis = get_input()
 	if axis == Vector2.ZERO:
@@ -67,3 +72,28 @@ func rotCount() -> int:
 		if (area.has_method("isRot")):
 			rotCount += 1
 	return rotCount
+
+func getHealth() -> float:
+	return health
+
+func hurt(damage: float) -> void:
+	health -= damage
+	# update healthbar
+	if healthbar == null:
+		healthbar = get_node("../CanvasLayer/ProgressBar")
+		healthbar.max_value = MAX_HEALTH
+		
+	healthbar.value = health
+	if health <= 0:
+		die()
+	
+	
+func die() -> void:
+	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
+	
+	
+	
+	
+	
+	
+	
