@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://ck2k1mk36x578"]
+[gd_scene load_steps=6 format=3 uid="uid://ck2k1mk36x578"]
 
 [ext_resource type="Texture2D" uid="uid://co05a76a8cdq2" path="res://icon.svg" id="1_dnkw2"]
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_us242"]
@@ -6,6 +6,9 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2wjw"]
 size = Vector2(16, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pyrgb"]
+radius = 150.0
 
 [node name="Player" type="CharacterBody2D"]
 z_index = 1
@@ -28,3 +31,8 @@ startPos = Vector2(10, 3)
 z_index = -1
 position = Vector2(-10, 3)
 startPos = Vector2(-10, 3)
+
+[node name="Hearing" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hearing"]
+shape = SubResource("CircleShape2D_pyrgb")

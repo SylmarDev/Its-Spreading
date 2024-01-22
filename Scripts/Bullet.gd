@@ -28,3 +28,10 @@ func _on_body_entered(body):
 	if (body.name in thingsIHit):
 		queue_free()
 		# call a hurt function on the body
+
+# handle hitting rot
+func _on_area_entered(area):
+	# print("%s, %s" % [area.name, area.has_method("hitBy")]) # DEBUG
+	if (area.has_method("hitBy")):
+		area.hitBy(self)
+		queue_free()
