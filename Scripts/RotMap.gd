@@ -5,6 +5,7 @@ class_name RotMap
 var playableArea: Vector2 # Vector2 of playing area
 var rotTilesPositions: Array
 var rotTiles: Array
+var tilesToRot: Array
 var rotDiff: Vector2 # amt the center is off
 
 @onready var rot = preload("res://Scenes/Rot.tscn")
@@ -37,13 +38,24 @@ func getArrayPlusY(arr: Array, yVal: int) -> Array:
 
 # x and y relate to positions on tile arr
 func createRotInst(x: int, y: int):
-	var rotInstance = rot.instantiate()
-	rotInstance.position = rotTilesPositions[x][y]
-	rotInstance.mapX = x
-	rotInstance.mapY = y
+	var rotInstance = rot
+	#rotInstance.position = rotTilesPositions[x][y]
+	tilesToRot.append(Vector2i(x, y))
+	#rotInstance.mapX = x
+	#rotInstance.mapY = y
 	#print("%s %s %s %s" % [str(x), str(y), str(rotInstance.mapX), str(rotInstance.mapY)])
-	add_child(rotInstance)
+	#add_child(rotInstance)
 	return rotInstance
+	
+func fillRot():
+	if len(tilesToRot) == 0:
+		return
+	var draw = []
+	for i in 10:
+		if len(tilesToRot) == 0:
+			return
+		draw.append(tilesToRot.pop_at(randi() % len(tilesToRot)))
+	rotMap.set_cells_terrain_connect(0, draw, 0, 0)
 	
 func createRotArr(iVal: int, size: int, allFilled: bool, bookendsFilled: bool):
 	var returnArr = []
@@ -110,6 +122,7 @@ func _ready():
 	audioStreamPlayer.autoplay = true
 	audioStreamPlayer.volume_db = volumeTo
 	audioStreamPlayer.play()
+	fillRot()
 	
 
 func resetEdges() -> void:
@@ -133,7 +146,6 @@ func resetEdges() -> void:
 
 func setRotTileArr(arr: Array, coords: Array) -> Array:
 	var returnArr = arr
-	rotMap.set_cells_terrain_connect(0, [round(Vector2(coords[0], coords[1]) / 8)], 0, 0);
 	arr[coords[1]] = createRotInst(coords[0], coords[1])
 	
 	return returnArr
@@ -232,12 +244,13 @@ func _process(delta):
 	timer += 1
 	audioStreamPlayer.volume_db = lerp(audioStreamPlayer.volume_db, volumeTo, 0.025)
 	setVolumeTo(player.rotCount())
+	fillRot()
 	if (!debugStopSpreading) and timer > timerRuns:
 		spreadRot()
 		
 		if needsResetEdges:
 			resetEdges()
-			
+		
 		#debugTimerRotations += 1
 		#debugStopSpreading = debugTimerRotations > debugStopSpreadingAfter
 		
