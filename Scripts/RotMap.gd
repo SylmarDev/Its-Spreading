@@ -8,6 +8,7 @@ var rotTiles: Array
 var rotDiff: Vector2 # amt the center is off
 
 @onready var rot = preload("res://Scenes/Rot.tscn")
+@onready var rotMap = $RotTileMap
 var rotDim: Vector2 = Vector2(8, 8) # hardcoded for now sue me (Idk if we can get dimensions before instaniating it
 var timer = 0
 var timerRuns = 120 # how many frames the timer waits before running to spread
@@ -132,6 +133,7 @@ func resetEdges() -> void:
 
 func setRotTileArr(arr: Array, coords: Array) -> Array:
 	var returnArr = arr
+	rotMap.set_cells_terrain_connect(0, [round(Vector2(coords[0], coords[1]) / 8)], 0, 0);
 	arr[coords[1]] = createRotInst(coords[0], coords[1])
 	
 	return returnArr

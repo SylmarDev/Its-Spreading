@@ -27,11 +27,9 @@ func _on_body_entered(body):
 	if (body.name == "Walls"):
 		queue_free()
 		return
-		
-	print(body.name)
-	if (body.name in thingsIHit):#
-		if(body is Enemy):
-			body.hitBy(self)
+	
+	if (body.get_script() in thingsIHit):#
+		body.hitBy(self)
 		queue_free()
 		# call a hurt function on the body
 
