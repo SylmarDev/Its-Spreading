@@ -53,7 +53,7 @@ func fillRot():
 	var draw = []
 	for i in 10:
 		if len(tilesToRot) == 0:
-			return
+			break
 		draw.append(tilesToRot.pop_at(randi() % len(tilesToRot)))
 	rotMap.set_cells_terrain_connect(0, draw, 0, 0)
 	
