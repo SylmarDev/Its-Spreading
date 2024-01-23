@@ -6,7 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://4dms7aw2lpl4" path="res://Sounds/beans_texture.mp3" id="4_p1ay6"]
 [ext_resource type="Theme" uid="uid://dhqrhfql4mvym" path="res://Art/UI/MainMenu.tres" id="5_db17u"]
 [ext_resource type="Script" path="res://Scripts/Enemies.gd" id="6_o71sc"]
-[ext_resource type="TileSet" uid="uid://b1vxxmvj5vdom" path="res://Art/Tilemap.tres" id="7_avajg"]
+[ext_resource type="TileSet" path="res://Art/Tilemap.tres" id="7_avajg"]
 [ext_resource type="Script" path="res://Scenes/RotTileMap.gd" id="8_jmj4e"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2b7o"]

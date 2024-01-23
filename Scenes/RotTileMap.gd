@@ -2,8 +2,8 @@ extends TileMap
 class_name RotTileMap
 
 func hitBy(body):
-	var surrounding = get_surrounding_cells(local_to_map(body.position))
-	erase_cell(0, local_to_map(body.position))
+	var surrounding = get_surrounding_cells(local_to_map(body.position + Vector2(388, 388)))
+	erase_cell(0, local_to_map(body.position + Vector2(388, 388)))
 	for pos in surrounding:
 		erase_cell(0, pos)
 		for pos_2 in get_surrounding_cells(pos):
