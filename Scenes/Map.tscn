@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dci5eckwmtjeu"]
+[gd_scene load_steps=12 format=3 uid="uid://dci5eckwmtjeu"]
 
 [ext_resource type="Script" path="res://Scripts/Map.gd" id="1_c3sva"]
 [ext_resource type="PackedScene" uid="uid://ck2k1mk36x578" path="res://Scenes/Player.tscn" id="1_gcw1n"]
@@ -6,6 +6,8 @@
 [ext_resource type="AudioStream" uid="uid://4dms7aw2lpl4" path="res://Sounds/beans_texture.mp3" id="4_p1ay6"]
 [ext_resource type="Theme" uid="uid://dhqrhfql4mvym" path="res://Art/UI/MainMenu.tres" id="5_db17u"]
 [ext_resource type="Script" path="res://Scripts/Enemies.gd" id="6_o71sc"]
+[ext_resource type="TileSet" uid="uid://d36x4sqfkb3bq" path="res://Art/Tilemap.tres" id="7_avajg"]
+[ext_resource type="Script" path="res://Scenes/RotTileMap.gd" id="8_jmj4e"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2b7o"]
 size = Vector2(776, 776)
@@ -91,3 +93,10 @@ visible = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemies/AudioStreamPlayer2D/Area2D"]
 shape = SubResource("CircleShape2D_2020n")
 debug_color = Color(0.498039, 0.305882, 0.188235, 0.768627)
+
+[node name="RotTileMap" type="TileMap" parent="."]
+texture_filter = 1
+tile_set = ExtResource("7_avajg")
+format = 2
+layer_0/tile_data = PackedInt32Array(-196613, 458752, 0, -196612, 0, 1, -196611, 131072, 3, -196610, 262144, 0, -196609, 262144, 0, -262144, 262144, 0, -262142, 262144, 0, -262143, 262144, 0, -262141, 262144, 0, -262140, 262144, 0, -262139, 262144, 0, -262138, 327680, 4, -196602, 327680, 0, -131066, 131072, 1, -131065, 327680, 3, -65529, 393216, 0, -196601, 262144, 1, -262137, 262144, 1, -327673, 196608, 0, -327674, 327680, 1, -327675, 327680, 1, -327676, 327680, 1, -327677, 327680, 1, -327678, 327680, 1, -327679, 327680, 1, -327680, 327680, 1, -262145, 327680, 1, -262146, 327680, 1, -262147, 131072, 0)
+script = ExtResource("8_jmj4e")

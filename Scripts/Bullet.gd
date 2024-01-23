@@ -26,9 +26,12 @@ func _on_body_entered(body):
 	# always destroy on walls
 	if (body.name == "Walls"):
 		queue_free()
-	
-	if ("Enemy" in thingsIHit and body is Enemy):
-		body.hitBy(self)
+		return
+		
+	print(body.name)
+	if (body.name in thingsIHit):#
+		if(body is Enemy):
+			body.hitBy(self)
 		queue_free()
 		# call a hurt function on the body
 

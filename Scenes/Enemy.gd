@@ -18,6 +18,7 @@ func getMovementDir() -> Vector2:
 	return position.direction_to(player.getPosition())
 
 func _ready() -> void:
+	print(name)
 	pass
 	
 func _physics_process(delta):
