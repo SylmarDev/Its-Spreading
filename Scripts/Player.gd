@@ -3,9 +3,9 @@ extends CharacterBody2D
 @onready var coll = $CollisionShape2D
 @onready var hearing = $Hearing
 
-var MAX_SPEED = 400 # 100 originally
+var MAX_SPEED = 100 # 100 originally
 var ACCEL = 375
-var friction = 5 # 150 originally
+var friction = 150 # 150 originally
 
 var motion: Vector2
 var axis: Vector2
@@ -36,7 +36,12 @@ func _physics_process(delta):
 		velocity = velocity.limit_length(MAX_SPEED)
 	
 	move_and_slide()
-	#look_at(get_global_mouse_position())
+	
+	for index in get_slide_collision_count():
+		var coll = get_slide_collision(index).get_collider()
+		if (coll.get_parent().name == "Enemies" && coll.isActive):
+			coll.isActive = false
+			hurt(5)
 	
 func get_input():
 	var axis = Vector2.ZERO
@@ -72,6 +77,9 @@ func rotCount() -> int:
 		if (area.has_method("isRot")):
 			rotCount += 1
 	return rotCount
+	
+func getPosition() -> Vector2:
+	return global_position
 
 func getHealth() -> float:
 	return health

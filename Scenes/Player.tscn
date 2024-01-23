@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://g4l7rvfg05hk" path="res://Scenes/ShipGun.tscn" id="3_353p8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2wjw"]
-size = Vector2(16, 16)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pyrgb"]
 radius = 150.0
@@ -15,22 +14,17 @@ z_index = 1
 disable_mode = 2
 script = ExtResource("1_us242")
 
+[node name="ShipGun" parent="." instance=ExtResource("3_353p8")]
+z_index = 1
+position = Vector2(0, 3)
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.125, 0.125)
+position = Vector2(-1.19209e-07, -1.19209e-07)
+scale = Vector2(0.164063, 0.164063)
 texture = ExtResource("1_dnkw2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_e2wjw")
-
-[node name="ShipGun" parent="." instance=ExtResource("3_353p8")]
-z_index = -1
-position = Vector2(10, 3)
-startPos = Vector2(10, 3)
-
-[node name="ShipGun2" parent="." instance=ExtResource("3_353p8")]
-z_index = -1
-position = Vector2(-10, 3)
-startPos = Vector2(-10, 3)
 
 [node name="Hearing" type="Area2D" parent="."]
 visible = false

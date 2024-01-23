@@ -9,7 +9,6 @@ var rotDiff: Vector2 # amt the center is off
 
 @onready var rot = preload("res://Scenes/Rot.tscn")
 var rotDim: Vector2 = Vector2(8, 8) # hardcoded for now sue me (Idk if we can get dimensions before instaniating it
-
 var timer = 0
 var timerRuns = 120 # how many frames the timer waits before running to spread
 
@@ -18,6 +17,13 @@ var needsResetEdges: bool = false
 @onready var audioStreamPlayer = $AudioStreamPlayer
 @onready var player = get_node("../Player")
 var volumeTo: float = -80.0 # float for volume range from -80 to 10 db
+
+@onready var enemy = preload("res://Scenes/Enemy.tscn")
+
+# DEBUG ONLY
+var debugStopSpreading = false
+var debugTimerRotations = 0
+var debugStopSpreadingAfter = 18000 / timerRuns 
 
 func getArrayPlusY(arr: Array, yVal: int) -> Array:
 	var returnArr = []
@@ -62,11 +68,11 @@ func _ready():
 	# get diff
 	rotDiff = Vector2((playableArea.x / 2), (playableArea.y / 2))
 	
-	rotTilesPositions.resize(int(playableArea.y / rotDim.y))
+	rotTilesPositions.resize(int(playableArea.y / rotDim.y) + 1)
 	
 	var i = 0
 	var arr = []
-	arr.resize(int(playableArea.x / rotDim.x))
+	arr.resize(int(playableArea.x / rotDim.x) + 1)
 	
 	# TODO: this should probably be a for loop but I can't be bothered to look up the syntax. 
 	# feel free to correct if its easy and I just brain farted here
@@ -129,27 +135,37 @@ func setRotTileArr(arr: Array, coords: Array) -> Array:
 	arr[coords[1]] = createRotInst(coords[0], coords[1])
 	
 	return returnArr
+
+func spawnEnemy(spawnCoords: Vector2) -> void:
+	var enemyInstance = enemy.instantiate()
+	enemyInstance.position = spawnCoords
+	enemyInstance.player = player
 	
+	#print("%s %s %s %s" % [str(x), str(y), str(rotInstance.mapX), str(rotInstance.mapY)])
+	get_node("../Enemies").add_child(enemyInstance)
 
 func spreadRot() -> void:
-	var willSpreadThisTick = randi_range(0, 9) < 5
+	var willSpreadThisTick = randi_range(0, 10) < 7
 	if willSpreadThisTick:
 		var i = 0
 		var q = 0
 		var spreadRotTo = [] # arr of Vector2's that will get rot (ROT GRID NOT COORDS)
-		var percentToCheck = 1.0 # 10%
-		var chance = 7
+		var percentToCheck = 2.0 # 20%
+		var chance = 3
 		
 		#region Determine where rot goes
 		while i < len(rotTiles):
-			if rotTiles[i].all(func(n): return n != null) and \
-				i != 0 and i != len(rotTiles)-1:
+			var rowFilled = rotTiles[i].all(func(n): return n != null) and \
+				i != 0 and i != len(rotTiles)-1
+			if rowFilled or \
+					(i == 0 and rotTiles[1].all(func(n): return n != null)) or \
+					(i == len(rotTiles)-1 and rotTiles[len(rotTiles)-2].all(func(n): return n != null)):
 				i += 1
 				continue
 			q = 0
 			while q < len(rotTiles[i]):
 				# skip chance, if no rot in tile, or if surrounded by rot
-				if randf_range(0.0, 9.0) < percentToCheck or \
+				if  randf_range(0.0, 10.0) < percentToCheck or \
 								rotTiles[i][q] == null or \
 								(i == 0 or rotTiles[i-1][q] != null) and \
 										(i == len(rotTiles)-1 or rotTiles[i+1][q] != null) and \
@@ -161,23 +177,23 @@ func spreadRot() -> void:
 				if i != 0 and i != len(rotTiles)-1:
 					# check left
 					if q != 0 and rotTiles[i][q-1] == null:
-						if randi_range(0, 9) < chance:
+						if randi_range(0, 10) < chance:
 							spreadRotTo.append([i, q-1])
 							
 					# check right
 					if q != len(rotTiles[i])-1 and rotTiles[i][q+1] == null:
-						if randi_range(0, 9) < chance:
+						if randi_range(0, 10) < chance:
 							spreadRotTo.append([i, q+1])
 				
 				if q != 0 and q != len(rotTiles[i])-1:
 					# check up
 					if i != 0 and rotTiles[i-1][q] == null:
-						if randi_range(0, 9) < chance:
+						if randi_range(0, 10) < chance:
 							spreadRotTo.append([i-1, q])
 					
 					# check down
 					if i != len(rotTiles)-1 and rotTiles[i+1][q] == null:
-						if randi_range(0, 9) < chance:
+						if randi_range(0, 10) < chance:
 							spreadRotTo.append([i+1, q])
 				
 				
@@ -185,32 +201,44 @@ func spreadRot() -> void:
 			i += 1
 		#endregion
 		
+		var enemySpawnRate = 0.1 # 1%
+		
 		# spread rot there
 		for coords in spreadRotTo:
 			if rotTiles[coords[0]][coords[1]] == null:
-				rotTiles[coords[0]][coords[1]] = createRotInst(coords[0], coords[1])
+				if enemySpawnRate < randf_range(0.0, 10.0):
+					rotTiles[coords[0]][coords[1]] = createRotInst(coords[0], coords[1])
+				else:
+					spawnEnemy(rotTilesPositions[coords[0]][coords[1]])
+				
 				#rotTiles[coords[0]] = setRotTileArr(rotTiles[0], coords)
 
 func deleteRotAtCoords(x: int, y: int) -> void:
 	rotTiles[x][y] = null
-	needsResetEdges = true
+	
+	if (x == 0 or y == 0 or x == len(rotTiles)-1 or y == len(rotTiles)-1):
+		needsResetEdges = true
 
 # set volumeTo
 func setVolumeTo(playerRotCount: int) -> void:
-	playerRotCount = clamp(playerRotCount, 0, 100)
-	#  -20 to 5 db
-	volumeTo = ((playerRotCount / 100) * 25) - 20
+	playerRotCount = clamp(playerRotCount, 0, 50)
+	#  -25 to 0 db
+	volumeTo = ((playerRotCount / 50) * 25) - 25
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	timer += 1
 	audioStreamPlayer.volume_db = lerp(audioStreamPlayer.volume_db, volumeTo, 0.025)
 	setVolumeTo(player.rotCount())
-	if timer > timerRuns:
+	if (!debugStopSpreading) and timer > timerRuns:
 		spreadRot()
 		
 		if needsResetEdges:
 			resetEdges()
+			
+		#debugTimerRotations += 1
+		#debugStopSpreading = debugTimerRotations > debugStopSpreadingAfter
+		
 		timer = 0
 	#resetEdges()
 	#spreadRot()
