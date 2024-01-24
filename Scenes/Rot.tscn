@@ -15,6 +15,7 @@ shape = SubResource("RectangleShape2D_2i5ta")
 debug_color = Color(0.819608, 0, 0.956863, 0.419608)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
 self_modulate = Color(0.737255, 0, 0.737255, 0.568627)
 scale = Vector2(0.0618896, 0.0618896)
 texture = ExtResource("2_nehme")

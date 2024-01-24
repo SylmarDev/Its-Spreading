@@ -12,6 +12,8 @@ var shotAngle: float # last shot angle
 
 @export var startPos: Vector2
 
+@onready var audioStreamPlayer = $AudioStreamPlayer2D
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	top_level = true
@@ -28,7 +30,9 @@ func shootBullet():
 	bullet_instance.rotation = shotAngle
 	# TODO: marker2d pos not always at tip of gun
 	bullet_instance.global_position = $GunSpr/Marker2D.global_position
-	bullet_instance.thingsIHit = ["Rot", "Enemy"]
+	bullet_instance.thingsIHit = [Rot, Enemy, RotTileMap]
+	
+	audioStreamPlayer.playing = true
 	
 	add_child(bullet_instance)
 

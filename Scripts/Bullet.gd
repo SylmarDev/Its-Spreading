@@ -8,13 +8,12 @@ var thingsIHit: Array
 var health: int = 4
 var damage: float = 1.0
 
-@onready var audioStreamPlayer = $AudioStreamPlayer2D
+
 
 func _ready():
 	set_as_top_level(true)
 	sprite = $Sprite2D
 	sprite_width = sprite.texture.get_width()
-	audioStreamPlayer.playing = true
 	
 	#scale.x = max(1, speed / sprite_width)
 
@@ -26,8 +25,9 @@ func _on_body_entered(body):
 	# always destroy on walls
 	if (body.name == "Walls"):
 		queue_free()
+		return
 	
-	if ("Enemy" in thingsIHit and body is Enemy):
+	if (body.get_script() in thingsIHit):
 		body.hitBy(self)
 		queue_free()
 		# call a hurt function on the body

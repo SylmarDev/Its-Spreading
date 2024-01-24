@@ -14,10 +14,6 @@ func _ready():
 	parent = get_parent()
 	#print("x: %s  y:%s" % [str(mapX), str(mapY)]) # DEBUG
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
 func hitBy(object):
 	parent.deleteRotAtCoords(mapX, mapY)
 	queue_free()
@@ -27,4 +23,4 @@ func isRot() -> bool:
 
 func _on_body_entered(body):
 	if body.name == "Player":
-		body.hurt(0.2) # 2 for now
+		body.hurt(5) # 2 for now

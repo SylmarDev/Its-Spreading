@@ -6,18 +6,14 @@ func _ready():
 	$VBoxContainer/Start.grab_focus()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-
 func _on_start_pressed():
 	get_tree().change_scene_to_file("res://Scenes/Map.tscn")
 
 
 func _on_options_pressed():
 	# TODO: make options
-	pass # Replace with function body.
+	pass
+	#get_tree().change_scene_to_file("res://Scenes/Store.tscn")
 
 
 func _on_quit_pressed():
