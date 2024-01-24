@@ -305,10 +305,10 @@ func _process(delta):
 			needsResetEdges = false
 		
 		#print("%s/%s" % [debugTimerRotations, debugStopSpreadingAfter])
-		stopLevelRotations += 1
-		if (stopLevelRotations > stopLevelAfter):
-			queue_free()
-			get_tree().change_scene_to_file("res://Scenes/Store.tscn")
+		#stopLevelRotations += 1
+		#if (stopLevelRotations > stopLevelAfter):
+			#queue_free()
+			#get_tree().change_scene_to_file("res://Scenes/Store.tscn")
 		
 		timer = 0
 	#resetEdges()
