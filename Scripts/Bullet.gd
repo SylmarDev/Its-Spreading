@@ -28,7 +28,7 @@ func _on_body_entered(body):
 		queue_free()
 		return
 	
-	if (body.get_script() in thingsIHit):#
+	if (body.get_script() in thingsIHit):
 		body.hitBy(self)
 		queue_free()
 		# call a hurt function on the body

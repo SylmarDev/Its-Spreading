@@ -1,13 +1,17 @@
 extends TileMap
 class_name RotTileMap
 
+func eraseCell(index: int, cell: Vector2):
+	erase_cell(index, cell)
+	get_parent().deleteRotAtCoords(cell.x, cell.y)
+
 func hitBy(body):
 	var surrounding = get_surrounding_cells(local_to_map(body.position + Vector2(388, 388)))
-	erase_cell(0, local_to_map(body.position + Vector2(388, 388)))
+	eraseCell(0, local_to_map(body.position + Vector2(388, 388)))
 	for pos in surrounding:
-		erase_cell(0, pos)
+		eraseCell(0, pos)
 		for pos_2 in get_surrounding_cells(pos):
-			erase_cell(0, pos_2)
+			eraseCell(0, pos_2) 
 			update_surrounding(pos_2)
 	
 func update_surrounding(pos: Vector2):

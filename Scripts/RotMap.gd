@@ -25,7 +25,7 @@ var volumeTo: float = -80.0 # float for volume range from -80 to 10 db
 # DEBUG ONLY
 var debugStopSpreading = false
 var debugTimerRotations = 0
-var debugStopSpreadingAfter = 18000 / timerRuns 
+var debugStopSpreadingAfter = 18000 / timerRuns
 
 func getArrayPlusY(arr: Array, yVal: int) -> Array:
 	var returnArr = []
@@ -36,15 +36,21 @@ func getArrayPlusY(arr: Array, yVal: int) -> Array:
 		i += 1
 	return returnArr
 
+func makeRotTile(x: int, y: int):
+	pass
+
 # x and y relate to positions on tile arr
 func createRotInst(x: int, y: int):
-	var rotInstance = rot
-	#rotInstance.position = rotTilesPositions[x][y]
-	tilesToRot.append(Vector2i(x, y))
-	#rotInstance.mapX = x
-	#rotInstance.mapY = y
+	# rot inst
+	var rotInstance = rot.instantiate()
+	rotInstance.position = rotTilesPositions[x][y]
+	
+	tilesToRot.append(Vector2i(y, x))
+	
+	rotInstance.mapX = x
+	rotInstance.mapY = y
 	#print("%s %s %s %s" % [str(x), str(y), str(rotInstance.mapX), str(rotInstance.mapY)])
-	#add_child(rotInstance)
+	add_child(rotInstance)
 	return rotInstance
 	
 func fillRot():
@@ -111,11 +117,14 @@ func _ready():
 	i = 0
 	var lastRowIndex = len(rotTiles)-1
 	var q = 0
+	
+	var tilemapsToFill = []
 
 	while i < len(rotTiles):
 		var allFilled = i == 0 || i == len(rotTiles)-1
 		rotTiles[i] = createRotArr(i, len(rotTiles[i]), allFilled, !allFilled)
 		i += 1
+	
 	#endregion
 	
 	# audio stream player
@@ -160,75 +169,92 @@ func spawnEnemy(spawnCoords: Vector2) -> void:
 
 func spreadRot() -> void:
 	var willSpreadThisTick = randi_range(0, 10) < 7
-	if willSpreadThisTick:
-		var i = 0
-		var q = 0
-		var spreadRotTo = [] # arr of Vector2's that will get rot (ROT GRID NOT COORDS)
-		var percentToCheck = 2.0 # 20%
-		var chance = 3
-		
-		#region Determine where rot goes
-		while i < len(rotTiles):
-			var rowFilled = rotTiles[i].all(func(n): return n != null) and \
-				i != 0 and i != len(rotTiles)-1
-			if rowFilled or \
-					(i == 0 and rotTiles[1].all(func(n): return n != null)) or \
-					(i == len(rotTiles)-1 and rotTiles[len(rotTiles)-2].all(func(n): return n != null)):
-				i += 1
-				continue
-			q = 0
-			while q < len(rotTiles[i]):
-				# skip chance, if no rot in tile, or if surrounded by rot
-				if  randf_range(0.0, 10.0) < percentToCheck or \
-								rotTiles[i][q] == null or \
-								(i == 0 or rotTiles[i-1][q] != null) and \
-										(i == len(rotTiles)-1 or rotTiles[i+1][q] != null) and \
-										(q == 0 or rotTiles[i][q-1] != null) and \
-										(q == len(rotTiles[i])-1 or rotTiles[i][q+1] != null):
-					q += 1
-					continue
-				
-				if i != 0 and i != len(rotTiles)-1:
-					# check left
-					if q != 0 and rotTiles[i][q-1] == null:
-						if randi_range(0, 10) < chance:
-							spreadRotTo.append([i, q-1])
-							
-					# check right
-					if q != len(rotTiles[i])-1 and rotTiles[i][q+1] == null:
-						if randi_range(0, 10) < chance:
-							spreadRotTo.append([i, q+1])
-				
-				if q != 0 and q != len(rotTiles[i])-1:
-					# check up
-					if i != 0 and rotTiles[i-1][q] == null:
-						if randi_range(0, 10) < chance:
-							spreadRotTo.append([i-1, q])
-					
-					# check down
-					if i != len(rotTiles)-1 and rotTiles[i+1][q] == null:
-						if randi_range(0, 10) < chance:
-							spreadRotTo.append([i+1, q])
-				
-				
-				q += 1
+	
+	if not willSpreadThisTick:
+		return
+	
+	var i = 0
+	var q = 0
+	var spreadRotTo = [] # arr of Vector2's that will get rot (ROT GRID NOT COORDS)
+	var percentToCheck = 2.0 # 20%
+	var chance = 3
+	
+	#region Determine where rot goes
+	while i < len(rotTiles):
+		var rowFilled = rotTiles[i].all(func(n): return n != null) and \
+			i != 0 and i != len(rotTiles)-1
+		if rowFilled or \
+				(i == 0 and rotTiles[1].all(func(n): return n != null)) or \
+				(i == len(rotTiles)-1 and rotTiles[len(rotTiles)-2].all(func(n): return n != null)):
 			i += 1
-		#endregion
-		
-		var enemySpawnRate = 0.1 # 1%
-		
-		# spread rot there
-		for coords in spreadRotTo:
-			if rotTiles[coords[0]][coords[1]] == null:
-				if enemySpawnRate < randf_range(0.0, 10.0):
-					rotTiles[coords[0]][coords[1]] = createRotInst(coords[0], coords[1])
-				else:
-					spawnEnemy(rotTilesPositions[coords[0]][coords[1]])
+			continue
+		q = 0
+		while q < len(rotTiles[i]):
+			# skip chance, if no rot in tile, or if surrounded by rot
+			if  randf_range(0.0, 10.0) < percentToCheck or \
+							rotTiles[i][q] == null or \
+							(i == 0 or rotTiles[i-1][q] != null) and \
+									(i == len(rotTiles)-1 or rotTiles[i+1][q] != null) and \
+									(q == 0 or rotTiles[i][q-1] != null) and \
+									(q == len(rotTiles[i])-1 or rotTiles[i][q+1] != null):
+				q += 1
+				continue
+			
+			if i != 0 and i != len(rotTiles)-1:
+				# check left
+				if q != 0 and rotTiles[i][q-1] == null:
+					if randi_range(0, 10) < chance:
+						spreadRotTo.append(Vector2i(i, q-1))
+						
+				# check right
+				if q != len(rotTiles[i])-1 and rotTiles[i][q+1] == null:
+					if randi_range(0, 10) < chance:
+						spreadRotTo.append(Vector2i(i, q+1))
+			
+			if q != 0 and q != len(rotTiles[i])-1:
+				# check up
+				if i != 0 and rotTiles[i-1][q] == null:
+					if randi_range(0, 10) < chance:
+						spreadRotTo.append(Vector2i(i-1, q))
 				
-				#rotTiles[coords[0]] = setRotTileArr(rotTiles[0], coords)
+				# check down
+				if i != len(rotTiles)-1 and rotTiles[i+1][q] == null:
+					if randi_range(0, 10) < chance:
+						spreadRotTo.append(Vector2i(i+1, q))
+			
+			
+			q += 1
+		i += 1
+	#endregion
+	
+	var enemySpawnRate = 0.1 # 1%
+	var skipTiling = []
+	
+	# spread rot there
+	for coords in spreadRotTo:
+		if rotTiles[coords[0]][coords[1]] == null:
+			if enemySpawnRate < randf_range(0.0, 10.0):
+				rotTiles[coords[0]][coords[1]] = createRotInst(coords[0], coords[1])
+			else:
+				skipTiling.append(coords)
+				spawnEnemy(rotTilesPositions[coords[0]][coords[1]])
+	
+	for vec in skipTiling:
+		spreadRotTo.erase(vec)
+		
+	# swap for tilemap grid
+	for vec in spreadRotTo:
+		vec.x = vec.x + vec.y
+		vec.y = vec.x - vec.y
+		vec.x = vec.x - vec.y
+		
+	tilesToRot.append_array(spreadRotTo)
 
 func deleteRotAtCoords(x: int, y: int) -> void:
+	#var cellCoord = rotMap.local_to_map(rotTiles[x][y].position + Vector2(388, 388))
 	rotTiles[x][y] = null
+	
+	rotMap.erase_cell(0, Vector2i(y, x))
 	
 	if (x == 0 or y == 0 or x == len(rotTiles)-1 or y == len(rotTiles)-1):
 		needsResetEdges = true
@@ -242,14 +268,20 @@ func setVolumeTo(playerRotCount: int) -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	timer += 1
-	audioStreamPlayer.volume_db = lerp(audioStreamPlayer.volume_db, volumeTo, 0.025)
+	
+	# audio
+	audioStreamPlayer.volume_db = lerp(audioStreamPlayer.volume_db, volumeTo, 0.7)
 	setVolumeTo(player.rotCount())
+	if (!audioStreamPlayer.playing):
+		audioStreamPlayer.playing = true
+	
 	fillRot()
 	if (!debugStopSpreading) and timer > timerRuns:
 		spreadRot()
 		
 		if needsResetEdges:
 			resetEdges()
+			needsResetEdges = false
 		
 		#debugTimerRotations += 1
 		#debugStopSpreading = debugTimerRotations > debugStopSpreadingAfter
