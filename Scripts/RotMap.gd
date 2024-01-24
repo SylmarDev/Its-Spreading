@@ -45,7 +45,7 @@ func createRotInst(x: int, y: int):
 	var rotInstance = rot.instantiate()
 	rotInstance.position = rotTilesPositions[x][y]
 	
-	tilesToRot.append(Vector2i(y, x))
+	#tilesToRot.append(Vector2i(y, x))
 	
 	rotInstance.mapX = x
 	rotInstance.mapY = y
@@ -99,10 +99,8 @@ func _ready():
 	var arr = []
 	arr.resize(int(playableArea.x / rotDim.x) + 1)
 	
-	# TODO: this should probably be a for loop but I can't be bothered to look up the syntax. 
-	# feel free to correct if its easy and I just brain farted here
 	while i < len(arr):
-		arr[i] = Vector2((i * rotDim.x) - rotDiff.x, 0 - rotDiff.y)
+		arr[i] = Vector2((i * rotDim.x) - rotDiff.x + (rotDim.x / 2), 0 - rotDiff.y + (rotDim.y / 2))
 		i += 1
 	
 	rotTilesPositions[0] = arr.duplicate()
@@ -129,7 +127,12 @@ func _ready():
 	while i < len(rotTiles):
 		var allFilled = i == 0 || i == len(rotTiles)-1
 		rotTiles[i] = createRotArr(i, len(rotTiles[i]), allFilled, !allFilled)
+		tilemapsToFill.append_array(rotTiles[i]
+			.filter(func(n): return n != null)
+			.map(func(n): return Vector2i(n.mapY, n.mapX)))
 		i += 1
+	
+	rotMap.set_cells_terrain_connect(0, tilemapsToFill, 0, 0)
 	
 	#endregion
 	
@@ -249,20 +252,32 @@ func spreadRot() -> void:
 				rotTiles[coords[0]][coords[1]] = createRotInst(coords[0], coords[1])
 			else:
 				skipTiling.append(coords)
-				spawnEnemy(rotTilesPositions[coords[0]][coords[1]])
+				#spawnEnemy(rotTilesPositions[coords[0]][coords[1]])
 	
 	for vec in skipTiling:
 		spreadRotTo.erase(vec)
 	
 	rotMap.set_cells_terrain_connect(0, swapVecForTilemap(spreadRotTo), 0, 0)
+	
+func update_surrounding(pos: Vector2):
+	var surrounding = rotMap.get_surrounding_cells(pos)
+	var to_update = []
+	for cell in surrounding:
+		if rotMap.get_cell_source_id(0, cell) != -1:
+			to_update += [cell]
+	for cell in to_update:
+		rotMap.set_cell(0, cell)
+	rotMap.set_cells_terrain_connect(0, to_update, 0, 0)
 
 func deleteRotAtCoords(x: int, y: int) -> void:
 	#var cellCoord = rotMap.local_to_map(rotTiles[x][y].position + Vector2(388, 388))
 	rotTiles[x][y] = null
 	
-	rotMap.erase_cell(0, Vector2i(y, x))
+	var tileMapLocation = Vector2i(y, x)
+	rotMap.erase_cell(0, tileMapLocation)
+	update_surrounding(tileMapLocation)
 	
-	print("x: %s y: %s" % [str(x), str(y)])
+	#print("x: %s y: %s" % [str(x), str(y)])
 	if (x == 0 or y == 0 or x == len(rotTiles)-1 or y == len(rotTiles)-1):
 		needsResetEdges = true
 
