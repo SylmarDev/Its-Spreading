@@ -1,11 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://c38lkhbyw1kkm"]
+[gd_scene load_steps=4 format=3 uid="uid://c38lkhbyw1kkm"]
 
 [ext_resource type="Script" path="res://Scripts/Bullet.gd" id="1_48ywx"]
 [ext_resource type="Texture2D" uid="uid://co05a76a8cdq2" path="res://icon.svg" id="2_x5ssk"]
-[ext_resource type="AudioStream" uid="uid://m2x0o4xx2uwg" path="res://Sounds/laser_single_1.wav" id="3_j5a3f"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_32rmm"]
-size = Vector2(12, 12)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_i28pp"]
+radius = 4.0
+height = 16.0
 
 [node name="Bullet" type="Area2D"]
 collision_layer = 3
@@ -14,16 +14,14 @@ script = ExtResource("1_48ywx")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 self_modulate = Color(0.819608, 0, 0, 1)
-scale = Vector2(0.101563, 0.101563)
+position = Vector2(-3.57628e-07, -2.98023e-07)
+rotation = 1.5708
+scale = Vector2(0.0625, 0.125)
 texture = ExtResource("2_x5ssk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-shape = SubResource("RectangleShape2D_32rmm")
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("3_j5a3f")
-volume_db = -25.0
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_i28pp")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
