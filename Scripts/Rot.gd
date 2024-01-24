@@ -23,4 +23,4 @@ func isRot() -> bool:
 
 func _on_body_entered(body):
 	if body.name == "Player":
-		body.hurt(0.2) # 2 for now
+		body.hurt(5) # 2 for now

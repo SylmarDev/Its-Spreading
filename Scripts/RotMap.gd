@@ -252,7 +252,7 @@ func spreadRot() -> void:
 				rotTiles[coords[0]][coords[1]] = createRotInst(coords[0], coords[1])
 			else:
 				skipTiling.append(coords)
-				#spawnEnemy(rotTilesPositions[coords[0]][coords[1]])
+				spawnEnemy(rotTilesPositions[coords[0]][coords[1]])
 	
 	for vec in skipTiling:
 		spreadRotTo.erase(vec)
@@ -305,6 +305,7 @@ func _process(delta):
 			resetEdges()
 			needsResetEdges = false
 		
+		#print("%s/%s" % [debugTimerRotations, debugStopSpreadingAfter])
 		#debugTimerRotations += 1
 		#debugStopSpreading = debugTimerRotations > debugStopSpreadingAfter
 		
