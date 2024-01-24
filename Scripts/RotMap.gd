@@ -63,6 +63,12 @@ func fillRot():
 		draw.append(tilesToRot.pop_at(randi() % len(tilesToRot)))
 	rotMap.set_cells_terrain_connect(0, draw, 0, 0)
 	
+func swapVecForTilemap(arr: Array):
+	var returnArr: Array
+	for vec in arr:
+		returnArr.append(Vector2i(vec.y, vec.x))
+	return returnArr
+	
 func createRotArr(iVal: int, size: int, allFilled: bool, bookendsFilled: bool):
 	var returnArr = []
 	returnArr.resize(size)
@@ -131,27 +137,33 @@ func _ready():
 	audioStreamPlayer.autoplay = true
 	audioStreamPlayer.volume_db = volumeTo
 	audioStreamPlayer.play()
-	fillRot()
+	#fillRot()
 	
 
 func resetEdges() -> void:
 	var i = 0
 	var lastRowIndex = len(rotTiles)-1
 	var q = 0
+	var tileMapToReplace = []
 	
 	for rotTileRow in rotTiles:
 		if (i == 0 || i == lastRowIndex): # every one in the row
 			while q < len(rotTileRow):
 				if rotTileRow[q] == null:
 					rotTileRow[q] = createRotInst(i, q)
+					tileMapToReplace.append(Vector2i(q, i))
 				q += 1
 			q = 0
 		else: # just first and last
 			if rotTileRow[0] == null:
 				rotTileRow[0] = createRotInst(i, 0)
+				tileMapToReplace.append(Vector2i(0, i))
 			elif rotTileRow[len(rotTileRow)-1] == null:
 				rotTileRow[len(rotTileRow)-1] = createRotInst(i, len(rotTileRow)-1)
+				tileMapToReplace.append(Vector2i(len(rotTileRow)-1, i))
 		i += 1
+	
+	rotMap.set_cells_terrain_connect(0, tileMapToReplace, 0, 0)
 
 func setRotTileArr(arr: Array, coords: Array) -> Array:
 	var returnArr = arr
@@ -241,14 +253,8 @@ func spreadRot() -> void:
 	
 	for vec in skipTiling:
 		spreadRotTo.erase(vec)
-		
-	# swap for tilemap grid
-	for vec in spreadRotTo:
-		vec.x = vec.x + vec.y
-		vec.y = vec.x - vec.y
-		vec.x = vec.x - vec.y
-		
-	tilesToRot.append_array(spreadRotTo)
+	
+	rotMap.set_cells_terrain_connect(0, swapVecForTilemap(spreadRotTo), 0, 0)
 
 func deleteRotAtCoords(x: int, y: int) -> void:
 	#var cellCoord = rotMap.local_to_map(rotTiles[x][y].position + Vector2(388, 388))
@@ -256,6 +262,7 @@ func deleteRotAtCoords(x: int, y: int) -> void:
 	
 	rotMap.erase_cell(0, Vector2i(y, x))
 	
+	print("x: %s y: %s" % [str(x), str(y)])
 	if (x == 0 or y == 0 or x == len(rotTiles)-1 or y == len(rotTiles)-1):
 		needsResetEdges = true
 
@@ -275,7 +282,7 @@ func _process(delta):
 	if (!audioStreamPlayer.playing):
 		audioStreamPlayer.playing = true
 	
-	fillRot()
+	#fillRot()
 	if (!debugStopSpreading) and timer > timerRuns:
 		spreadRot()
 		
