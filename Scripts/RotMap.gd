@@ -22,10 +22,9 @@ var volumeTo: float = -80.0 # float for volume range from -80 to 10 db
 
 @onready var enemy = preload("res://Scenes/Enemy.tscn")
 
-# DEBUG ONLY
-var debugStopSpreading = false
-var debugTimerRotations = 0
-var debugStopSpreadingAfter = 18000 / timerRuns
+var stopLevel = false
+var stopLevelRotations = 0
+var stopLevelAfter = global.currentStage / timerRuns
 
 func getArrayPlusY(arr: Array, yVal: int) -> Array:
 	var returnArr = []
@@ -298,7 +297,7 @@ func _process(delta):
 		audioStreamPlayer.playing = true
 	
 	#fillRot()
-	if (!debugStopSpreading) and timer > timerRuns:
+	if (!stopLevel) and timer > timerRuns:
 		spreadRot()
 		
 		if needsResetEdges:
@@ -306,8 +305,10 @@ func _process(delta):
 			needsResetEdges = false
 		
 		#print("%s/%s" % [debugTimerRotations, debugStopSpreadingAfter])
-		#debugTimerRotations += 1
-		#debugStopSpreading = debugTimerRotations > debugStopSpreadingAfter
+		stopLevelRotations += 1
+		if (stopLevelRotations > stopLevelAfter):
+			queue_free()
+			get_tree().change_scene_to_file("res://Scenes/Store.tscn")
 		
 		timer = 0
 	#resetEdges()

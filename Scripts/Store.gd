@@ -11,14 +11,20 @@ var totalUpgradesInShop = 3
 func _ready():
 	upgrades.resize(totalUpgradesInShop)
 	var i = 0
+	
+	var shuffled = global.upgrades.duplicate()
+	shuffled.shuffle()
+	
 	while i < totalUpgradesInShop:
-		upgrades[i] = global.upgrades[randi() % len(global.upgrades)-1]
+		upgrades[i] = shuffled[i]
 		buttons[i].text = "%s\n%s" % [upgrades[i][0], upgrades[i][1]]
 		i += 1
 	
 func buttonPressed(btnNum: int):
 	global.playerUpgrades.append(upgrades[btnNum])
 	global.upgrades.erase(upgrades[btnNum])
+	
+	get_tree().change_scene_to_file("res://Scenes/Map.tscn")
 
 
 func _on_button_0_pressed():
