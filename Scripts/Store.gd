@@ -20,7 +20,7 @@ func _ready():
 		buttons[i].text = "%s\n%s" % [upgrades[i][0], upgrades[i][1]]
 		i += 1
 	
-func buttonPressed(btnNum: int):
+func buttonPressed(btnNum: int):	
 	global.playerUpgrades.append(upgrades[btnNum])
 	global.upgrades.erase(upgrades[btnNum])
 	

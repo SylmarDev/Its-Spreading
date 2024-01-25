@@ -24,7 +24,7 @@ var volumeTo: float = -80.0 # float for volume range from -80 to 10 db
 
 var stopLevel = false
 var stopLevelRotations = 0
-var stopLevelAfter = global.currentStage / timerRuns
+var stopLevelAfter = global.stageTimer[global.currentStage]
 
 func getArrayPlusY(arr: Array, yVal: int) -> Array:
 	var returnArr = []
@@ -305,10 +305,16 @@ func _process(delta):
 			needsResetEdges = false
 		
 		#print("%s/%s" % [debugTimerRotations, debugStopSpreadingAfter])
-		#stopLevelRotations += 1
-		#if (stopLevelRotations > stopLevelAfter):
-			#queue_free()
-			#get_tree().change_scene_to_file("res://Scenes/Store.tscn")
+		stopLevelRotations += 1
+		if (stopLevelRotations > stopLevelAfter):
+			global.currentStage += 1
+			# end game if applicable
+			if global.currentStage >= len(global.stageTimer):
+				# end game
+				global.setDefaults()
+				get_tree().change_scene_to_file("res://Scenes/Winner.tscn")
+			else:
+				get_tree().change_scene_to_file("res://Scenes/Store.tscn")
 		
 		timer = 0
 	#resetEdges()

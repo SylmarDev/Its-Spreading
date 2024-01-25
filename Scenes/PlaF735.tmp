@@ -22,7 +22,6 @@ position = Vector2(0, 3)
 texture_filter = 1
 position = Vector2(-1.19209e-07, -1.19209e-07)
 texture = ExtResource("3_1ln2k")
-metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
