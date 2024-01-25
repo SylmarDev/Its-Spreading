@@ -12,6 +12,8 @@ var upgrades: Array
 var playerUpgrades: Array
 	
 func setDefaults() -> void:
+	randomize()
+	
 	currentStage = 0
 	
 	upgrades = [

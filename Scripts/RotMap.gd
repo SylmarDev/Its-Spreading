@@ -297,7 +297,9 @@ func setVolumeTo(playerRotCount: int) -> void:
 	
 func countdownTimer() -> void:
 	var currentTime = countdown.text
-	if currentTime.ends_with("00"):
+	if currentTime == "0:00":
+		return
+	elif currentTime.ends_with("00"):
 		countdown.text = "%s:59" % str(int(currentTime.split(":")[0])-1)
 	else:
 		var minutes = currentTime.split(":")[0]
@@ -318,7 +320,7 @@ func _process(delta):
 	
 	fillRot()
 	
-	if (timer != timerRuns and fmod(timer, 60) == 0):
+	if (fmod(timer, 60) == 0):
 		countdownTimer()
 	
 	if (!stopLevel) and timer > timerRuns:
