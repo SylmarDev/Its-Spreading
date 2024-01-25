@@ -131,7 +131,7 @@ func _ready():
 			.map(func(n): return Vector2i(n.mapY, n.mapX)))
 		i += 1
 	
-	rotMap.set_cells_terrain_connect(0, tilemapsToFill, 0, 0)
+	tilesToRot.append_array(tilemapsToFill)
 	
 	#endregion
 	
@@ -165,7 +165,7 @@ func resetEdges() -> void:
 				tileMapToReplace.append(Vector2i(len(rotTileRow)-1, i))
 		i += 1
 	
-	rotMap.set_cells_terrain_connect(0, tileMapToReplace, 0, 0)
+	tilesToRot.append_array(tileMapToReplace)
 
 func setRotTileArr(arr: Array, coords: Array) -> Array:
 	var returnArr = arr
@@ -256,7 +256,7 @@ func spreadRot() -> void:
 	for vec in skipTiling:
 		spreadRotTo.erase(vec)
 	
-	rotMap.set_cells_terrain_connect(0, swapVecForTilemap(spreadRotTo), 0, 0)
+	tilesToRot.append_array(swapVecForTilemap(spreadRotTo))
 	
 func update_surrounding(pos: Vector2):
 	var surrounding = rotMap.get_surrounding_cells(pos)
@@ -296,7 +296,7 @@ func _process(delta):
 	if (!audioStreamPlayer.playing):
 		audioStreamPlayer.playing = true
 	
-	#fillRot()
+	fillRot()
 	if (!stopLevel) and timer > timerRuns:
 		spreadRot()
 		
