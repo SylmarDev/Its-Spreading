@@ -24,7 +24,9 @@ var volumeTo: float = -80.0 # float for volume range from -80 to 10 db
 
 var stopLevel = false
 var stopLevelRotations = 0
-var stopLevelAfter = global.currentStage / timerRuns
+var stopLevelAfter = global.stageTimer[global.currentStage]
+
+@onready var countdown = get_node("../CanvasLayer/Countdown")
 
 func getArrayPlusY(arr: Array, yVal: int) -> Array:
 	var returnArr = []
@@ -140,6 +142,13 @@ func _ready():
 	audioStreamPlayer.volume_db = volumeTo
 	audioStreamPlayer.play()
 	#fillRot()
+	
+	var totalSeconds = stopLevelAfter * (timerRuns / 60)
+	var minutes = str(int(totalSeconds / 60))
+	var seconds = str(int(fmod(totalSeconds, 60)))
+	if len(seconds) == 1:
+		seconds = "0%s" % seconds
+	countdown.text = "%s:%s" % [minutes, seconds]
 	
 
 func resetEdges() -> void:
@@ -285,6 +294,17 @@ func setVolumeTo(playerRotCount: int) -> void:
 	playerRotCount = clamp(playerRotCount, 0, 50)
 	#  -25 to 0 db
 	volumeTo = ((playerRotCount / 50) * 25) - 25
+	
+func countdownTimer() -> void:
+	var currentTime = countdown.text
+	if currentTime.ends_with("00"):
+		countdown.text = "%s:59" % str(int(currentTime.split(":")[0])-1)
+	else:
+		var minutes = currentTime.split(":")[0]
+		var seconds = str(int(currentTime.split(":")[1])-1)
+		if len(seconds) == 1:
+			seconds = "0%s" % seconds
+		countdown.text = "%s:%s" % [minutes, seconds]
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -297,6 +317,10 @@ func _process(delta):
 		audioStreamPlayer.playing = true
 	
 	fillRot()
+	
+	if (timer != timerRuns and fmod(timer, 60) == 0):
+		countdownTimer()
+	
 	if (!stopLevel) and timer > timerRuns:
 		spreadRot()
 		
@@ -305,10 +329,16 @@ func _process(delta):
 			needsResetEdges = false
 		
 		#print("%s/%s" % [debugTimerRotations, debugStopSpreadingAfter])
-		#stopLevelRotations += 1
-		#if (stopLevelRotations > stopLevelAfter):
-			#queue_free()
-			#get_tree().change_scene_to_file("res://Scenes/Store.tscn")
+		stopLevelRotations += 1
+		if (stopLevelRotations > stopLevelAfter):
+			global.currentStage += 1
+			# end game if applicable
+			if global.currentStage >= len(global.stageTimer):
+				# end game
+				global.setDefaults()
+				get_tree().change_scene_to_file("res://Scenes/Winner.tscn")
+			else:
+				get_tree().change_scene_to_file("res://Scenes/Store.tscn")
 		
 		timer = 0
 	#resetEdges()

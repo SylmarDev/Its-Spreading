@@ -22,5 +22,5 @@ func isRot() -> bool:
 	return true
 
 func _on_body_entered(body):
-	if body.name == "Player":
+	if body.name == "Player" and !body.invincible:
 		body.hurt(5) # 2 for now

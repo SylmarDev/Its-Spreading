@@ -14,6 +14,9 @@ var isActive: bool = true
 var isActiveTimer: int = 0
 var disabledFrames: int = 90
 
+var luckyPunch: bool = global.playerUpgrades.any(func(n): return n[0] == "LuckyPunch")
+var luckyPunchChance = 7.5
+
 func getMovementDir() -> Vector2:
 	return position.direction_to(player.getPosition())
 
@@ -37,7 +40,7 @@ func _physics_process(delta):
 func hitBy(projectile) -> void:
 	health -= projectile.damage
 	velocity += (velocity.rotated(3.1415926535) * 1.2)
-	if (health <= 0):
+	if (health <= 0 or (luckyPunch and randf_range(0, 100) < luckyPunchChance)):
 		die()
 		
 func die() -> void:

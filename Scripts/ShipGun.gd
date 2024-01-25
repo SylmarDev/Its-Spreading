@@ -3,7 +3,8 @@ extends Node2D
 var rng = RandomNumberGenerator.new()
 
 var gunReady = true
-var gunCooldown = 30
+var defaultGunCooldown = 30
+var gunCooldown = defaultGunCooldown
 
 var spread = 0.07
 @onready var bullet = preload("res://Scenes/Bullet.tscn")
@@ -17,12 +18,13 @@ var shotAngle: float # last shot angle
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	top_level = true
+	z_index = 2
 	
 
 # shoot a bullet
 func shootBullet():
 	gunReady = false
-	gunCooldown = 30
+	gunCooldown = defaultGunCooldown
 	
 	shotAngle = rotation + rng.randf_range(-spread, spread) # in rads
 	

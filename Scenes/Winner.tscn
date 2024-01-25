@@ -1,0 +1,78 @@
+[gd_scene load_steps=5 format=3 uid="uid://dc5vdetdd7hwq"]
+
+[ext_resource type="Theme" uid="uid://dhqrhfql4mvym" path="res://Art/UI/MainMenu.tres" id="1_25ia2"]
+[ext_resource type="Script" path="res://Scripts/Winner.gd" id="2_7a6ny"]
+
+[sub_resource type="SystemFont" id="SystemFont_41qjf"]
+
+[sub_resource type="Theme" id="Theme_vu5kx"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchor_left = 0.502
+anchor_top = 0.5
+anchor_right = 0.502
+anchor_bottom = 0.5
+offset_left = -159.64
+offset_top = -89.0
+offset_right = 159.36
+offset_bottom = 89.0
+theme = ExtResource("1_25ia2")
+script = ExtResource("2_7a6ny")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 173.0
+offset_bottom = 67.0
+theme_override_fonts/font = SubResource("SystemFont_41qjf")
+text = "CONGRATIONS
+YOU'RE WINNER!!"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -116.5
+offset_top = -63.0
+offset_right = -28.5
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.8, 0.8)
+theme = SubResource("Theme_vu5kx")
+alignment = 1
+
+[node name="PlayAgain" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Play Again"
+
+[node name="Quit" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.792
+anchor_top = 0.568
+anchor_right = 0.792
+anchor_bottom = 0.568
+offset_left = -89.648
+offset_top = -39.104
+offset_right = 54.352
+offset_bottom = 72.896
+theme_override_font_sizes/font_size = 14
+text = "Thank you for playing our game!
+
+@LuckyPunchGames on Twitter"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[connection signal="pressed" from="VBoxContainer/PlayAgain" to="." method="_on_play_again_pressed"]
+[connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]

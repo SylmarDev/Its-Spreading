@@ -2,6 +2,10 @@ extends CharacterBody2D
 
 @onready var coll = $CollisionShape2D
 @onready var hearing = $Hearing
+@onready var gun = $ShipGun
+var gun2 = null
+
+var gunScene = preload("res://Scenes/ShipGun.tscn")
 
 var MAX_SPEED = 100 # 100 originally
 var ACCEL = 375
@@ -19,6 +23,47 @@ var health = 100.0
 
 var healthbar
 
+var oneGunLocation = Vector2(0, 3)
+var twoGunLocations = [Vector2(-8, 1), Vector2(8, 1)]
+
+# ITEMS
+var secondChance: bool = false
+var shieldGenerator: bool = false
+
+var invincible: bool = false
+var invincibleCounter: int = 180
+
+func _ready() -> void:
+	# set upgrades if applicable
+	for upgrade in global.playerUpgrades:
+		match upgrade[0]: # upgrade[0] is the string of the upgrade name
+			"ArmorPlating":
+				MAX_HEALTH = 200
+				health = MAX_HEALTH
+			"AddtWeaponPort":
+				gun2 = gunScene.instantiate()
+				gun2.startPos = twoGunLocations[1]
+				gun2.defaultGunCooldown = gun.defaultGunCooldown
+				add_child(gun2)
+			"EnchanedThrusters":
+				MAX_SPEED = 200
+				ACCEL = 300
+			"Overclocker":
+				# TODO: make work with addt weapon
+				gun.defaultGunCooldown /= 2
+				if gun2 != null:
+					gun2.defaultGunCooldown = gun.defaultGunCooldown
+			"SecondChance":
+				secondChance = true
+			"ShieldGenerator":
+				shieldGenerator = true
+			_:
+				print("upgrade %s not found!" % upgrade[0])
+				
+	# set weapon positions
+	var hasAdditionalWeaponPort = global.playerUpgrades.any(func(n): return n[0] == "AddtWeaponPort")
+	gun.startPos = twoGunLocations[0] if hasAdditionalWeaponPort else oneGunLocation
+
 func _physics_process(delta):
 	axis = get_input()
 	if axis == Vector2.ZERO:
@@ -35,6 +80,10 @@ func _physics_process(delta):
 		velocity += axis * ACCEL * delta
 		velocity = velocity.limit_length(MAX_SPEED)
 	
+	if invincible:
+		invincibleCounter -= 1
+		invincible = invincibleCounter >= 0
+		
 	move_and_slide()
 	
 	for index in get_slide_collision_count():
@@ -85,6 +134,11 @@ func getHealth() -> float:
 	return health
 
 func hurt(damage: float) -> void:
+	if shieldGenerator or invincible:
+		# TODO: shield gen sfx
+		shieldGenerator = false
+		return
+	
 	health -= damage
 	# update healthbar
 	if healthbar == null:
@@ -97,9 +151,14 @@ func hurt(damage: float) -> void:
 	
 	
 func die() -> void:
+	if (secondChance):
+		secondChance = false
+		invincible = true
+		return
 	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
 	
-	
+func isInvincible() -> bool:
+	return invincible
 	
 	
 	
