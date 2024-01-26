@@ -288,7 +288,7 @@ func update_surrounding(pos: Vector2):
 func deleteRotAtCoords(x: int, y: int) -> void:
 	#var cellCoord = rotMap.local_to_map(rotTiles[x][y].position + Vector2(388, 388))
 	rotTiles[x][y] = null
-	
+	tilesToRot.erase(Vector2i(y, x))
 	var tileMapLocation = Vector2i(y, x)
 	rotMap.erase_cell(0, tileMapLocation)
 	update_surrounding(tileMapLocation)
