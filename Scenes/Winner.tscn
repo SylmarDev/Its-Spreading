@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://dc5vdetdd7hwq"]
+[gd_scene load_steps=6 format=3 uid="uid://dc5vdetdd7hwq"]
 
 [ext_resource type="Theme" uid="uid://dhqrhfql4mvym" path="res://Art/UI/MainMenu.tres" id="1_25ia2"]
 [ext_resource type="Script" path="res://Scripts/Winner.gd" id="2_7a6ny"]
+[ext_resource type="Texture2D" uid="uid://daqkneypwa0ce" path="res://Art/2d_lights_and_shadows_neutral_point_light.webp" id="3_o34ko"]
 
 [sub_resource type="SystemFont" id="SystemFont_41qjf"]
 
@@ -19,6 +20,24 @@ offset_right = 159.36
 offset_bottom = 89.0
 theme = ExtResource("1_25ia2")
 script = ExtResource("2_7a6ny")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+position = Vector2(160, 90)
+scale = Vector2(1.495, 1.495)
+color = Color(0.498039, 0.498039, 0.498039, 1)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -7.0
+offset_top = -4.0
+offset_right = 331.0
+offset_bottom = 192.0
+color = Color(0.105882, 0.121569, 0.129412, 1)
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(160, 90)
+scale = Vector2(4.765, 2.49)
+energy = 0.75
+texture = ExtResource("3_o34ko")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
