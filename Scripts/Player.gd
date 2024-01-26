@@ -120,12 +120,12 @@ func normalizeAngle(a: float) -> float:
 	
 	return fmod(a, 360.0)
 
-func rotCount() -> int:
-	var rotCount = 0
+func rotDistance() -> int:
+	var rotDist = 200
 	for area in hearing.get_overlapping_areas():
-		if (area.has_method("isRot")):
-			rotCount += 1
-	return rotCount
+		if (area.has_method("isRot") and area.position.distance_to(self.position) < rotDist):
+			rotDist = area.position.distance_to(self.position)
+	return rotDist
 	
 func getPosition() -> Vector2:
 	return global_position

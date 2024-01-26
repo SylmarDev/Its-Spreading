@@ -7,7 +7,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2wjw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pyrgb"]
-radius = 150.0
+radius = 200.0
 
 [node name="Player" type="CharacterBody2D"]
 z_index = 1

@@ -69,7 +69,7 @@ script = ExtResource("3_30lau")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="RotMap"]
 stream = ExtResource("4_p1ay6")
-volume_db = 1.0
+volume_db = -80.0
 
 [node name="RotTileMap" type="TileMap" parent="RotMap"]
 texture_filter = 1

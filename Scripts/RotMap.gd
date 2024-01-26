@@ -290,10 +290,8 @@ func deleteRotAtCoords(x: int, y: int) -> void:
 		needsResetEdges = true
 
 # set volumeTo
-func setVolumeTo(playerRotCount: int) -> void:
-	playerRotCount = clamp(playerRotCount, 0, 50)
-	#  -25 to 0 db
-	volumeTo = ((playerRotCount / 50) * 25) - 25
+func setVolumeTo(volume: float) -> void:
+	audioStreamPlayer.volume_db = volume
 	
 func countdownTimer() -> void:
 	var currentTime = countdown.text
@@ -313,8 +311,7 @@ func _process(delta):
 	timer += 1
 	
 	# audio
-	audioStreamPlayer.volume_db = lerp(audioStreamPlayer.volume_db, volumeTo, 0.7)
-	setVolumeTo(player.rotCount())
+	setVolumeTo(- (player.rotDistance() / 3))
 	if (!audioStreamPlayer.playing):
 		audioStreamPlayer.playing = true
 	
