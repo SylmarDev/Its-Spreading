@@ -3,7 +3,8 @@
 [ext_resource type="Script" path="res://Scenes/Enemy.gd" id="1_sjjae"]
 [ext_resource type="Texture2D" uid="uid://cohsjph6li2e4" path="res://Art/Creature-Sheet.png" id="2_a0svi"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_e2wjw"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o8sqv"]
+height = 24.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6ybcn"]
 atlas = ExtResource("2_a0svi")
@@ -110,7 +111,7 @@ disable_mode = 2
 script = ExtResource("1_sjjae")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_e2wjw")
+shape = SubResource("CapsuleShape2D_o8sqv")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1

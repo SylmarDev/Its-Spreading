@@ -16,6 +16,7 @@ func _ready():
 
 func hitBy(object):
 	parent.deleteRotAtCoords(mapX, mapY)
+	parent.createRotParticle(global_position)
 	queue_free()
 
 func isRot() -> bool:

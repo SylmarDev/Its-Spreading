@@ -28,6 +28,8 @@ var stopLevelAfter = global.stageTimer[global.currentStage]
 
 @onready var countdown = get_node("../CanvasLayer/Countdown")
 
+@onready var rotDestroyParticle = preload("res://Scenes/RotDestroyParticle.tscn")
+
 func getArrayPlusY(arr: Array, yVal: int) -> Array:
 	var returnArr = []
 	returnArr.resize(len(arr))
@@ -288,6 +290,12 @@ func deleteRotAtCoords(x: int, y: int) -> void:
 	#print("x: %s y: %s" % [str(x), str(y)])
 	if (x == 0 or y == 0 or x == len(rotTiles)-1 or y == len(rotTiles)-1):
 		needsResetEdges = true
+		
+func createRotParticle(pos: Vector2) -> void:
+	var rotParticle = rotDestroyParticle.instantiate()
+	rotParticle.position = pos
+	rotParticle.emitting = true
+	add_child(rotParticle)
 
 # set volumeTo
 func setVolumeTo(volume: float) -> void:

@@ -1,6 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://46r8p2carboq"]
+[gd_scene load_steps=9 format=3 uid="uid://dc2qxmxm5u55k"]
 
-[ext_resource type="Script" path="res://Scripts/EnemyDeathParticle.gd" id="1_dnnlk"]
+[ext_resource type="Script" path="res://Scripts/EnemyDeathParticle.gd" id="1_trkgi"]
 
 [sub_resource type="Gradient" id="Gradient_s53lo"]
 offsets = PackedFloat32Array(0.523256, 0.98062)
@@ -37,18 +37,18 @@ radial_velocity_min = 25.0
 radial_velocity_max = 100.0
 radial_velocity_curve = SubResource("CurveTexture_fhgbm")
 gravity = Vector3(0, 0, 0)
-scale_min = 7.0
-scale_max = 20.0
+scale_min = 2.0
+scale_max = 6.0
 scale_curve = SubResource("CurveTexture_u5w7c")
 color_ramp = SubResource("GradientTexture1D_n4dxn")
 
 [node name="GPUParticles2D" type="GPUParticles2D"]
 modulate = Color(0.0784314, 0.0941176, 0.180392, 1)
 emitting = false
-amount = 5
+amount = 10
 process_material = SubResource("ParticleProcessMaterial_efshq")
 one_shot = true
 speed_scale = 2.0
 explosiveness = 1.0
 fixed_fps = 60
-script = ExtResource("1_dnnlk")
+script = ExtResource("1_trkgi")
