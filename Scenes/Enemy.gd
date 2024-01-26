@@ -19,9 +19,6 @@ var luckyPunchChance = 7.5
 
 func getMovementDir() -> Vector2:
 	return position.direction_to(player.getPosition())
-
-func _ready() -> void:
-	pass
 	
 func _physics_process(delta):
 	if (isActive):
@@ -46,9 +43,8 @@ func hitBy(projectile) -> void:
 func die() -> void:
 	if not dead:
 		dead = true
+		get_parent().createDeathParticleEffect(global_position)
 		get_parent().playDeathSound(global_position)
 		isActive = false
 		isActiveTimer = -999
 		queue_free()
-	
-	
