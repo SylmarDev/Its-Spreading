@@ -10,9 +10,8 @@ var helpfulMessages = [
 	"The shamblers do damage",
 	"Skill Issue",
 	"Its okay, mistakes happen",
-	"Well, it wasn't a great attempt anyways",
-	"That's rough buddy",
-	"Almost!"
+	"Well it wasn't a great attempt anyways",
+	"That's rough buddy"
 ]
 
 # Called when the node enters the scene tree for the first time.
