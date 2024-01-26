@@ -144,7 +144,7 @@ func hurt(damage: float) -> void:
 	health -= damage
 	# update healthbar
 	if healthbar == null:
-		healthbar = get_node("../CanvasLayer/ProgressBar")
+		healthbar = get_node("../CanvasLayer/TextureProgressBar")
 		healthbar.max_value = MAX_HEALTH
 		
 	healthbar.value = health

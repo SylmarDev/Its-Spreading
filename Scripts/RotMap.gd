@@ -28,7 +28,8 @@ var stopLevel = false
 var stopLevelRotations = 0
 var stopLevelAfter = global.stageTimer[global.currentStage]
 
-@onready var countdown = get_node("../CanvasLayer/Countdown")
+@onready var countdown = get_node("../CanvasLayer/Timer")
+@onready var startTime = Time.get_unix_time_from_system()
 
 @onready var rotDestroyParticle = preload("res://Scenes/RotDestroyParticle.tscn")
 @onready var shipExplosionParticle = preload("res://Scenes/ShipDestroyParticle.tscn")
@@ -155,12 +156,7 @@ func _ready():
 	audioStreamPlayer.play()
 	#fillRot()
 	
-	var totalSeconds = stopLevelAfter * (timerRuns / 60)
-	var minutes = str(int(totalSeconds / 60))
-	var seconds = str(int(fmod(totalSeconds, 60)))
-	if len(seconds) == 1:
-		seconds = "0%s" % seconds
-	countdown.text = "%s:%s" % [minutes, seconds]
+	countdown.play("first")
 	
 
 func resetEdges() -> void:
@@ -321,17 +317,19 @@ func setVolumeTo(volume: float) -> void:
 	audioStreamPlayer.volume_db = volume
 	
 func countdownTimer() -> void:
-	var currentTime = countdown.text
-	if currentTime == "0:00":
+	if countdown.frame != 0:
 		return
-	elif currentTime.ends_with("00"):
-		countdown.text = "%s:59" % str(int(currentTime.split(":")[0])-1)
+	var totalSeconds = stopLevelAfter * (timerRuns / 60)
+	var time = Time.get_unix_time_from_system() - startTime
+	var percent = time / totalSeconds
+	if percent < 0.25:
+		countdown.play("first")
+	elif percent < 0.5:
+		countdown.play("second")
+	elif percent < 0.75:
+		countdown.play("third")
 	else:
-		var minutes = currentTime.split(":")[0]
-		var seconds = str(int(currentTime.split(":")[1])-1)
-		if len(seconds) == 1:
-			seconds = "0%s" % seconds
-		countdown.text = "%s:%s" % [minutes, seconds]
+		countdown.play("fourth")
 		
 func endGameLoop(dest: String) -> void:
 	global.setDefaults()
