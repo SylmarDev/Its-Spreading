@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://ck2k1mk36x578"]
+[gd_scene load_steps=11 format=3 uid="uid://ck2k1mk36x578"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_us242"]
 [ext_resource type="PackedScene" uid="uid://g4l7rvfg05hk" path="res://Scenes/ShipGun.tscn" id="3_353p8"]
 [ext_resource type="Texture2D" uid="uid://beonq180qnh36" path="res://Art/Ship-Sheet.png" id="3_ubthr"]
+[ext_resource type="Texture2D" uid="uid://daqkneypwa0ce" path="res://Art/2d_lights_and_shadows_neutral_point_light.webp" id="4_tpufn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2wjw"]
 
@@ -66,3 +67,11 @@ shape = SubResource("CircleShape2D_pyrgb")
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_2261w")
 animation = &"moving"
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+energy = 0.5
+shadow_enabled = true
+shadow_filter = 2
+shadow_filter_smooth = 1.0
+texture = ExtResource("4_tpufn")
+texture_scale = 3.67
