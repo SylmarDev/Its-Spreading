@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://g4l7rvfg05hk"]
 
-[ext_resource type="Texture2D" uid="uid://co05a76a8cdq2" path="res://icon.svg" id="1_4j8ut"]
+[ext_resource type="Texture2D" uid="uid://dfpb5wdh3nilw" path="res://Art/Gun.png" id="2_aifxv"]
 [ext_resource type="Script" path="res://Scripts/ShipGun.gd" id="2_w0ogd"]
 [ext_resource type="AudioStream" uid="uid://m2x0o4xx2uwg" path="res://Sounds/laser_single_1.wav" id="3_ytcp3"]
 
@@ -8,14 +8,14 @@
 script = ExtResource("2_w0ogd")
 
 [node name="GunSpr" type="Sprite2D" parent="."]
-modulate = Color(0, 0, 0, 1)
 show_behind_parent = true
+texture_filter = 1
 position = Vector2(-9.53674e-07, -7.15256e-07)
-scale = Vector2(0.0566406, 0.0566406)
-texture = ExtResource("1_4j8ut")
+rotation = 1.5708
+texture = ExtResource("2_aifxv")
 
 [node name="Marker2D" type="Marker2D" parent="GunSpr"]
-position = Vector2(1.68373e-05, -52.9655)
+position = Vector2(9.53674e-07, 3)
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_ytcp3")

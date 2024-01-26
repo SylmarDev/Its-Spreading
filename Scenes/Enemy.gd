@@ -51,6 +51,7 @@ func die() -> void:
 		dead = true
 		get_parent().createDeathParticleEffect(global_position)
 		get_parent().playDeathSound(global_position)
+		get_node("../../RotMap").enemyCount -= 1
 		isActive = false
 		isActiveTimer = -999
 		queue_free()

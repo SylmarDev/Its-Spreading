@@ -23,6 +23,7 @@ var needsResetEdges: bool = false
 var volumeTo: float = -80.0 # float for volume range from -80 to 10 db
 
 @onready var enemy = preload("res://Scenes/Enemy.tscn")
+var enemyCount = 0
 
 var stopLevel = false
 var stopLevelRotations = 0
@@ -35,6 +36,7 @@ var stopLevelAfter = global.stageTimer[global.currentStage]
 @onready var shipExplosionParticle = preload("res://Scenes/ShipDestroyParticle.tscn")
 @onready var explosionSfx = $PlayerExplosion
 
+var ended = false;
 @onready var youLose = get_node("../CanvasLayer/YouLose")
 
 func getArrayPlusY(arr: Array, yVal: int) -> Array:
@@ -191,9 +193,12 @@ func setRotTileArr(arr: Array, coords: Array) -> Array:
 	return returnArr
 
 func spawnEnemy(spawnCoords: Vector2) -> void:
+	if ended:
+		return
 	var enemyInstance = enemy.instantiate()
 	enemyInstance.position = spawnCoords
 	enemyInstance.player = player
+	enemyCount += 1;
 	
 	#print("%s %s %s %s" % [str(x), str(y), str(rotInstance.mapX), str(rotInstance.mapY)])
 	get_node("../Enemies").add_child(enemyInstance)
@@ -355,7 +360,7 @@ func _process(delta):
 	if (fmod(timer, 60) == 0):
 		countdownTimer()
 	
-	if (!stopLevel) and timer > timerRuns:
+	if (!ended) and timer > timerRuns:
 		spreadRot()
 		
 		if needsResetEdges:
@@ -366,13 +371,19 @@ func _process(delta):
 		stopLevelRotations += 1
 		if (stopLevelRotations > stopLevelAfter and player != null):
 			global.currentStage += 1
-			# end game if applicable
-			if global.currentStage >= len(global.stageTimer):
-				# end game
-				endGameLoop("res://Scenes/Winner.tscn")
-			else:
-				get_tree().change_scene_to_file("res://Scenes/Store.tscn")
-		
+			ended = true;
 		timer = 0
-	#resetEdges()
-	#spreadRot()
+	if !$Timer.is_stopped():
+		get_node("../Player/PointLight2D").energy = $Timer.time_left / 2
+		var val = $Timer.time_left / 2
+		get_node("../CanvasModulate").color = Color(val, val, val)
+	if ended and enemyCount == 0 and $Timer.is_stopped():
+		$Timer.start()
+
+
+func _on_timer_timeout():
+	if global.currentStage >= len(global.stageTimer):
+		# end game
+		endGameLoop("res://Scenes/Winner.tscn")
+	else:
+		get_tree().change_scene_to_file("res://Scenes/Store.tscn")
