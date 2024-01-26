@@ -1,18 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://gph1jyjm4av6"]
+[gd_scene load_steps=3 format=3 uid="uid://gph1jyjm4av6"]
 
 [ext_resource type="Script" path="res://Scripts/YouLose.gd" id="1_4ptx2"]
+[ext_resource type="Texture2D" uid="uid://dxheq63lgpn73" path="res://Art/You Died.png" id="2_8udi0"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_4ptx2")
 
-[node name="Label" type="Label" parent="."]
-modulate = Color(1, 0, 0, 1)
-offset_left = -37.0
-offset_top = -34.0
-offset_right = 39.0
-offset_bottom = -11.0
-text = "YOU DIED"
-horizontal_alignment = 1
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -29)
+texture = ExtResource("2_8udi0")
 
 [node name="TrashTalk" type="Label" parent="."]
 modulate = Color(1, 0, 0, 1)
@@ -26,9 +23,9 @@ horizontal_alignment = 1
 [node name="PressAny" type="Label" parent="."]
 modulate = Color(1, 0, 0, 1)
 offset_left = -88.0
-offset_top = 65.0
+offset_top = 30.0
 offset_right = 87.0
-offset_bottom = 77.0
+offset_bottom = 42.0
 theme_override_font_sizes/font_size = 8
 text = "Press any key to continue"
 horizontal_alignment = 1

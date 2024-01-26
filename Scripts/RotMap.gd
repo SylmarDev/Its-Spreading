@@ -369,7 +369,7 @@ func _process(delta):
 		
 		#print("%s/%s" % [debugTimerRotations, debugStopSpreadingAfter])
 		stopLevelRotations += 1
-		if (stopLevelRotations > stopLevelAfter and player != null):
+		if (stopLevelRotations > stopLevelAfter and !player.dead):
 			global.currentStage += 1
 			ended = true;
 		timer = 0
