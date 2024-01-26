@@ -45,12 +45,11 @@ func _ready() -> void:
 				gun2.startPos = twoGunLocations[1]
 				gun2.defaultGunCooldown = gun.defaultGunCooldown
 				add_child(gun2)
-			"EnchanedThrusters":
+			"EnhancedThrusters":
 				MAX_SPEED = 200
 				ACCEL = 300
-				friction = 200
+				friction = 250
 			"Overclocker":
-				# TODO: make work with addt weapon
 				gun.defaultGunCooldown /= 2
 				if gun2 != null:
 					gun2.defaultGunCooldown = gun.defaultGunCooldown
