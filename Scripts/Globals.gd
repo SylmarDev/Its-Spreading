@@ -1,6 +1,7 @@
 extends Node
 
 var currentStage: int = 0
+var paused: bool = true
 
 # divided by 2 seconds sections
 var stageTimer: Array = [30, 60, 120, 150]

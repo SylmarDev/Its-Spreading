@@ -341,6 +341,9 @@ func endGameLoop(dest: String) -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if (global.paused):
+		return
+	
 	timer += 1
 	
 	# audio
