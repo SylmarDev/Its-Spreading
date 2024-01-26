@@ -14,6 +14,8 @@ var rotDim: Vector2 = Vector2(8, 8) # hardcoded for now sue me (Idk if we can ge
 var timer = 0
 var timerRuns = 120 # how many frames the timer waits before running to spread
 
+var chance: float
+
 var needsResetEdges: bool = false
 
 @onready var audioStreamPlayer = $AudioStreamPlayer
@@ -141,6 +143,10 @@ func _ready():
 	
 	#endregion
 	
+	# set chance
+	chance = global.rotRate[global.currentStage]
+	#print("chance: %s" % str(chance)) #DEBUG
+	
 	# audio stream player
 	audioStreamPlayer.autoplay = true
 	audioStreamPlayer.volume_db = volumeTo
@@ -204,7 +210,7 @@ func spreadRot() -> void:
 	var q = 0
 	var spreadRotTo = [] # arr of Vector2's that will get rot (ROT GRID NOT COORDS)
 	var percentToCheck = 2.0 # 20%
-	var chance = 3
+	
 	
 	#region Determine where rot goes
 	while i < len(rotTiles):
@@ -230,23 +236,23 @@ func spreadRot() -> void:
 			if i != 0 and i != len(rotTiles)-1:
 				# check left
 				if q != 0 and rotTiles[i][q-1] == null:
-					if randi_range(0, 10) < chance:
+					if randf_range(0, 10) < chance:
 						spreadRotTo.append(Vector2i(i, q-1))
 						
 				# check right
 				if q != len(rotTiles[i])-1 and rotTiles[i][q+1] == null:
-					if randi_range(0, 10) < chance:
+					if randf_range(0, 10) < chance:
 						spreadRotTo.append(Vector2i(i, q+1))
 			
 			if q != 0 and q != len(rotTiles[i])-1:
 				# check up
 				if i != 0 and rotTiles[i-1][q] == null:
-					if randi_range(0, 10) < chance:
+					if randf_range(0, 10) < chance:
 						spreadRotTo.append(Vector2i(i-1, q))
 				
 				# check down
 				if i != len(rotTiles)-1 and rotTiles[i+1][q] == null:
-					if randi_range(0, 10) < chance:
+					if randf_range(0, 10) < chance:
 						spreadRotTo.append(Vector2i(i+1, q))
 			
 			
@@ -324,6 +330,10 @@ func countdownTimer() -> void:
 		if len(seconds) == 1:
 			seconds = "0%s" % seconds
 		countdown.text = "%s:%s" % [minutes, seconds]
+		
+func endGameLoop(dest: String) -> void:
+	global.setDefaults()
+	get_tree().change_scene_to_file(dest)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -331,7 +341,7 @@ func _process(delta):
 	
 	# audio
 	if player != null:
-		setVolumeTo(- (player.rotDistance() / 3))
+		setVolumeTo(- ((player.rotDistance() - 200) * 0.1) - 20)
 		
 	if (!audioStreamPlayer.playing):
 		audioStreamPlayer.playing = true
@@ -350,13 +360,12 @@ func _process(delta):
 		
 		#print("%s/%s" % [debugTimerRotations, debugStopSpreadingAfter])
 		stopLevelRotations += 1
-		if (stopLevelRotations > stopLevelAfter):
+		if (stopLevelRotations > stopLevelAfter and player != null):
 			global.currentStage += 1
 			# end game if applicable
 			if global.currentStage >= len(global.stageTimer):
 				# end game
-				global.setDefaults()
-				get_tree().change_scene_to_file("res://Scenes/Winner.tscn")
+				endGameLoop("res://Scenes/Winner.tscn")
 			else:
 				get_tree().change_scene_to_file("res://Scenes/Store.tscn")
 		

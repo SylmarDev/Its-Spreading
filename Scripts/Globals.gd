@@ -4,6 +4,7 @@ var currentStage: int = 0
 
 # divided by 2 seconds sections
 var stageTimer: Array = [30, 60, 120, 150]
+var rotRate: Array = [3, 3.5, 4, 4.5]
 #var stageTimer: Array = [1, 1, 1, 150] # DEBUG
 
 # godot doesn't have structs so its array of strings time
