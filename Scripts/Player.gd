@@ -40,7 +40,7 @@ func _ready() -> void:
 	for upgrade in global.playerUpgrades:
 		match upgrade[0]: # upgrade[0] is the string of the upgrade name
 			"ArmorPlating":
-				MAX_HEALTH = 200
+				MAX_HEALTH = 150
 				health = MAX_HEALTH
 			"AddtWeaponPort":
 				gun2 = gunScene.instantiate()
