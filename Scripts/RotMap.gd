@@ -29,6 +29,8 @@ var stopLevelAfter = global.stageTimer[global.currentStage]
 @onready var countdown = get_node("../CanvasLayer/Countdown")
 
 @onready var rotDestroyParticle = preload("res://Scenes/RotDestroyParticle.tscn")
+@onready var shipExplosionParticle = preload("res://Scenes/ShipDestroyParticle.tscn")
+@onready var explosionSfx = $PlayerExplosion
 
 func getArrayPlusY(arr: Array, yVal: int) -> Array:
 	var returnArr = []
@@ -296,6 +298,15 @@ func createRotParticle(pos: Vector2) -> void:
 	rotParticle.position = pos
 	rotParticle.emitting = true
 	add_child(rotParticle)
+	
+func destroyShip(pos: Vector2):
+	explosionSfx.playing = true
+	
+	var shipExplosion = shipExplosionParticle.instantiate()
+	shipExplosion.position = pos
+	shipExplosion.emitting = true
+	add_child(shipExplosion)
+	#get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
 
 # set volumeTo
 func setVolumeTo(volume: float) -> void:
@@ -319,7 +330,9 @@ func _process(delta):
 	timer += 1
 	
 	# audio
-	setVolumeTo(- (player.rotDistance() / 3))
+	if player != null:
+		setVolumeTo(- (player.rotDistance() / 3))
+		
 	if (!audioStreamPlayer.playing):
 		audioStreamPlayer.playing = true
 	

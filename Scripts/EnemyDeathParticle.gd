@@ -4,5 +4,5 @@ extends GPUParticles2D
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if Time.get_ticks_msec() - timeCreated > 2000:
+	if Time.get_ticks_msec() - timeCreated > 5000:
 		queue_free()

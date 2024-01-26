@@ -157,7 +157,9 @@ func die() -> void:
 		secondChance = false
 		invincible = true
 		return
-	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
+	get_parent().get_node("RotMap").destroyShip(global_position)
+	queue_free()
+	
 	
 func isInvincible() -> bool:
 	return invincible
