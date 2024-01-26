@@ -67,6 +67,8 @@ func _ready() -> void:
 	gun.startPos = twoGunLocations[0] if hasAdditionalWeaponPort else oneGunLocation
 
 func _physics_process(delta):
+	if (global.paused):
+		return
 	axis = get_input()
 	if axis == Vector2.ZERO:
 		$AnimatedSprite2D.play("idle")
