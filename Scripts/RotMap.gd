@@ -34,6 +34,8 @@ var stopLevelAfter = global.stageTimer[global.currentStage]
 @onready var shipExplosionParticle = preload("res://Scenes/ShipDestroyParticle.tscn")
 @onready var explosionSfx = $PlayerExplosion
 
+@onready var youLose = preload("res://Scenes/YouLose.tscn")
+
 func getArrayPlusY(arr: Array, yVal: int) -> Array:
 	var returnArr = []
 	returnArr.resize(len(arr))
@@ -312,7 +314,7 @@ func destroyShip(pos: Vector2):
 	shipExplosion.position = pos
 	shipExplosion.emitting = true
 	add_child(shipExplosion)
-	#get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
+	endGameLoop("")
 
 # set volumeTo
 func setVolumeTo(volume: float) -> void:
@@ -333,7 +335,15 @@ func countdownTimer() -> void:
 		
 func endGameLoop(dest: String) -> void:
 	global.setDefaults()
-	get_tree().change_scene_to_file(dest)
+	if dest.contains("Winner"):
+		get_tree().change_scene_to_file(dest)
+	else:
+		var yl = youLose.instantiate()
+		var camera = get_parent().get_node("CameraFollow").get_node("Camera2D")
+		var center = camera.get_screen_center_position()
+		var offset = camera.offset
+		yl.position = center + offset
+		get_parent().add_child(yl)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
