@@ -3,8 +3,8 @@ extends Node
 var currentStage: int = 0
 
 # divided by 2 seconds sections
-#var stageTimer: Array = [60, 70, 90, 120, 150, 180]
-var stageTimer: Array = [60, 90, 120, 150] # DEBUG
+var stageTimer: Array = [60, 90, 120, 150] 
+#var stageTimer: Array = [1, 1, 1, 150] # DEBUG
 
 # godot doesn't have structs so its array of strings time
 var upgrades: Array

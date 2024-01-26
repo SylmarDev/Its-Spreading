@@ -48,6 +48,7 @@ func _ready() -> void:
 			"EnchanedThrusters":
 				MAX_SPEED = 200
 				ACCEL = 300
+				friction = 200
 			"Overclocker":
 				# TODO: make work with addt weapon
 				gun.defaultGunCooldown /= 2
