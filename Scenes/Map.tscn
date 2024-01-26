@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://dci5eckwmtjeu"]
+[gd_scene load_steps=61 format=3 uid="uid://dci5eckwmtjeu"]
 
 [ext_resource type="Script" path="res://Scripts/Map.gd" id="1_c3sva"]
 [ext_resource type="PackedScene" uid="uid://ck2k1mk36x578" path="res://Scenes/Player.tscn" id="1_gcw1n"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://dse2svgatr3gc" path="res://Art/Timer-Sheet.png" id="11_6fghd"]
 [ext_resource type="Texture2D" uid="uid://g4f5grerd0b6" path="res://Art/Bar-top.png" id="11_wmps1"]
 [ext_resource type="Texture2D" uid="uid://coy7b7h3q1bo5" path="res://Art/Grass-Sheet.png" id="12_auyum"]
+[ext_resource type="PackedScene" uid="uid://gph1jyjm4av6" path="res://Scenes/YouLose.tscn" id="12_ph0gb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2b7o"]
 size = Vector2(776, 776)
@@ -424,6 +425,10 @@ position = Vector2(311, 167)
 scale = Vector2(0.75, 0.75)
 sprite_frames = SubResource("SpriteFrames_ta74g")
 animation = &"fourth"
+
+[node name="YouLose" parent="CanvasLayer" instance=ExtResource("12_ph0gb")]
+visible = false
+position = Vector2(160, 90)
 
 [node name="Enemies" type="Node2D" parent="."]
 script = ExtResource("6_o71sc")

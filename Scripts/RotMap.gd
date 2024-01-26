@@ -35,7 +35,7 @@ var stopLevelAfter = global.stageTimer[global.currentStage]
 @onready var shipExplosionParticle = preload("res://Scenes/ShipDestroyParticle.tscn")
 @onready var explosionSfx = $PlayerExplosion
 
-@onready var youLose = preload("res://Scenes/YouLose.tscn")
+@onready var youLose = get_node("../CanvasLayer/YouLose")
 
 func getArrayPlusY(arr: Array, yVal: int) -> Array:
 	var returnArr = []
@@ -336,12 +336,8 @@ func endGameLoop(dest: String) -> void:
 	if dest.contains("Winner"):
 		get_tree().change_scene_to_file(dest)
 	else:
-		var yl = youLose.instantiate()
-		var camera = get_parent().get_node("CameraFollow").get_node("Camera2D")
-		var center = camera.get_screen_center_position()
-		var offset = camera.offset
-		yl.position = center + offset
-		get_parent().add_child(yl)
+		youLose.create()
+		youLose.show()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
