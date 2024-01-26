@@ -1,13 +1,47 @@
-[gd_scene load_steps=6 format=3 uid="uid://ck2k1mk36x578"]
+[gd_scene load_steps=10 format=3 uid="uid://ck2k1mk36x578"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_us242"]
-[ext_resource type="Texture2D" uid="uid://odejre5s77i4" path="res://Art/Ship.png" id="3_1ln2k"]
 [ext_resource type="PackedScene" uid="uid://g4l7rvfg05hk" path="res://Scenes/ShipGun.tscn" id="3_353p8"]
+[ext_resource type="Texture2D" uid="uid://beonq180qnh36" path="res://Art/Ship-Sheet.png" id="3_ubthr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2wjw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pyrgb"]
 radius = 150.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3bieg"]
+atlas = ExtResource("3_ubthr")
+region = Rect2(1, 1, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kmkf4"]
+atlas = ExtResource("3_ubthr")
+region = Rect2(45, 1, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_shjyv"]
+atlas = ExtResource("3_ubthr")
+region = Rect2(23, 1, 20, 20)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2261w"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3bieg")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kmkf4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_shjyv")
+}],
+"loop": true,
+"name": &"moving",
+"speed": 10.0
+}]
 
 [node name="Player" type="CharacterBody2D"]
 z_index = 1
@@ -18,12 +52,6 @@ script = ExtResource("1_us242")
 z_index = 1
 position = Vector2(0, 3)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture_filter = 1
-position = Vector2(-1.19209e-07, -1.19209e-07)
-texture = ExtResource("3_1ln2k")
-metadata/_edit_lock_ = true
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 shape = SubResource("RectangleShape2D_e2wjw")
@@ -33,3 +61,8 @@ visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hearing"]
 shape = SubResource("CircleShape2D_pyrgb")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_2261w")
+animation = &"moving"

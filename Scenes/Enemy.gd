@@ -21,7 +21,7 @@ func getMovementDir() -> Vector2:
 	return position.direction_to(player.getPosition())
 
 func _ready() -> void:
-	pass
+	$AnimatedSprite2D.play("walk")
 	
 func _physics_process(delta):
 	if (isActive):
@@ -30,6 +30,7 @@ func _physics_process(delta):
 		velocity = velocity.limit_length(MAX_SPEED)
 		
 		move_and_slide()
+		$AnimatedSprite2D.flip_h = axis.x < 0;
 	else:
 		isActiveTimer += 1
 		if isActiveTimer > disabledFrames:
