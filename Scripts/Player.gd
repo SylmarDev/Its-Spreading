@@ -67,12 +67,14 @@ func _ready() -> void:
 func _physics_process(delta):
 	axis = get_input()
 	if axis == Vector2.ZERO:
+		$AnimatedSprite2D.play("idle")
 		if velocity.length() > (friction * delta):
 			rotateShip()
 			velocity -= velocity.normalized() * (friction * delta)
 		else:
 			velocity = Vector2.ZERO
 	else:
+		$AnimatedSprite2D.play("moving")
 		# ship rotation
 		setShipAngleTo(axis)
 		rotateShip()
