@@ -33,6 +33,8 @@ var shieldGenerator: bool = false
 var invincible: bool = false
 var invincibleCounter: int = 180
 
+var dead = false;
+
 func _ready() -> void:
 	# set upgrades if applicable
 	for upgrade in global.playerUpgrades:
@@ -96,7 +98,8 @@ func _physics_process(delta):
 	
 func get_input():
 	var axis = Vector2.ZERO
-	axis = Input.get_vector("left", "right", "up", "down")
+	if !dead:
+		axis = Input.get_vector("left", "right", "up", "down")
 	
 	return axis
 	
@@ -144,11 +147,11 @@ func hurt(damage: float) -> void:
 	health -= damage
 	# update healthbar
 	if healthbar == null:
-		healthbar = get_node("../CanvasLayer/ProgressBar")
+		healthbar = get_node("../CanvasLayer/TextureProgressBar")
 		healthbar.max_value = MAX_HEALTH
 		
 	healthbar.value = health
-	if health <= 0:
+	if health <= 0 and !dead:
 		die()
 	
 	
@@ -157,8 +160,10 @@ func die() -> void:
 		secondChance = false
 		invincible = true
 		return
+	dead = true;
 	get_parent().get_node("RotMap").destroyShip(global_position)
-	queue_free()
+	$AnimatedSprite2D.hide()
+	$ShipGun.hide()
 	
 	
 func isInvincible() -> bool:

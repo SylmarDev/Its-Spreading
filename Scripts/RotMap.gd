@@ -23,18 +23,21 @@ var needsResetEdges: bool = false
 var volumeTo: float = -80.0 # float for volume range from -80 to 10 db
 
 @onready var enemy = preload("res://Scenes/Enemy.tscn")
+var enemyCount = 0
 
 var stopLevel = false
 var stopLevelRotations = 0
 var stopLevelAfter = global.stageTimer[global.currentStage]
 
-@onready var countdown = get_node("../CanvasLayer/Countdown")
+@onready var countdown = get_node("../CanvasLayer/Timer")
+@onready var startTime = Time.get_unix_time_from_system()
 
 @onready var rotDestroyParticle = preload("res://Scenes/RotDestroyParticle.tscn")
 @onready var shipExplosionParticle = preload("res://Scenes/ShipDestroyParticle.tscn")
 @onready var explosionSfx = $PlayerExplosion
 
-@onready var youLose = preload("res://Scenes/YouLose.tscn")
+var ended = false;
+@onready var youLose = get_node("../CanvasLayer/YouLose")
 
 func getArrayPlusY(arr: Array, yVal: int) -> Array:
 	var returnArr = []
@@ -155,12 +158,7 @@ func _ready():
 	audioStreamPlayer.play()
 	#fillRot()
 	
-	var totalSeconds = stopLevelAfter * (timerRuns / 60)
-	var minutes = str(int(totalSeconds / 60))
-	var seconds = str(int(fmod(totalSeconds, 60)))
-	if len(seconds) == 1:
-		seconds = "0%s" % seconds
-	countdown.text = "%s:%s" % [minutes, seconds]
+	countdown.play("first")
 	
 
 func resetEdges() -> void:
@@ -195,9 +193,12 @@ func setRotTileArr(arr: Array, coords: Array) -> Array:
 	return returnArr
 
 func spawnEnemy(spawnCoords: Vector2) -> void:
+	if ended:
+		return
 	var enemyInstance = enemy.instantiate()
 	enemyInstance.position = spawnCoords
 	enemyInstance.player = player
+	enemyCount += 1;
 	
 	#print("%s %s %s %s" % [str(x), str(y), str(rotInstance.mapX), str(rotInstance.mapY)])
 	get_node("../Enemies").add_child(enemyInstance)
@@ -292,7 +293,7 @@ func update_surrounding(pos: Vector2):
 func deleteRotAtCoords(x: int, y: int) -> void:
 	#var cellCoord = rotMap.local_to_map(rotTiles[x][y].position + Vector2(388, 388))
 	rotTiles[x][y] = null
-	
+	tilesToRot.erase(Vector2i(y, x))
 	var tileMapLocation = Vector2i(y, x)
 	rotMap.erase_cell(0, tileMapLocation)
 	update_surrounding(tileMapLocation)
@@ -321,29 +322,27 @@ func setVolumeTo(volume: float) -> void:
 	audioStreamPlayer.volume_db = volume
 	
 func countdownTimer() -> void:
-	var currentTime = countdown.text
-	if currentTime == "0:00":
+	if countdown.frame != 0:
 		return
-	elif currentTime.ends_with("00"):
-		countdown.text = "%s:59" % str(int(currentTime.split(":")[0])-1)
+	var totalSeconds = stopLevelAfter * (timerRuns / 60)
+	var time = Time.get_unix_time_from_system() - startTime
+	var percent = time / totalSeconds
+	if percent < 0.25:
+		countdown.play("first")
+	elif percent < 0.5:
+		countdown.play("second")
+	elif percent < 0.75:
+		countdown.play("third")
 	else:
-		var minutes = currentTime.split(":")[0]
-		var seconds = str(int(currentTime.split(":")[1])-1)
-		if len(seconds) == 1:
-			seconds = "0%s" % seconds
-		countdown.text = "%s:%s" % [minutes, seconds]
+		countdown.play("fourth")
 		
 func endGameLoop(dest: String) -> void:
 	global.setDefaults()
 	if dest.contains("Winner"):
 		get_tree().change_scene_to_file(dest)
 	else:
-		var yl = youLose.instantiate()
-		var camera = get_parent().get_node("CameraFollow").get_node("Camera2D")
-		var center = camera.get_screen_center_position()
-		var offset = camera.offset
-		yl.position = center + offset
-		get_parent().add_child(yl)
+		youLose.create()
+		youLose.show()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -361,7 +360,7 @@ func _process(delta):
 	if (fmod(timer, 60) == 0):
 		countdownTimer()
 	
-	if (!stopLevel) and timer > timerRuns:
+	if (!ended) and timer > timerRuns:
 		spreadRot()
 		
 		if needsResetEdges:
@@ -372,13 +371,19 @@ func _process(delta):
 		stopLevelRotations += 1
 		if (stopLevelRotations > stopLevelAfter and player != null):
 			global.currentStage += 1
-			# end game if applicable
-			if global.currentStage >= len(global.stageTimer):
-				# end game
-				endGameLoop("res://Scenes/Winner.tscn")
-			else:
-				get_tree().change_scene_to_file("res://Scenes/Store.tscn")
-		
+			ended = true;
 		timer = 0
-	#resetEdges()
-	#spreadRot()
+	if !$Timer.is_stopped():
+		get_node("../Player/PointLight2D").energy = $Timer.time_left / 2
+		var val = $Timer.time_left / 2
+		get_node("../CanvasModulate").color = Color(val, val, val)
+	if ended and enemyCount == 0 and $Timer.is_stopped():
+		$Timer.start()
+
+
+func _on_timer_timeout():
+	if global.currentStage >= len(global.stageTimer):
+		# end game
+		endGameLoop("res://Scenes/Winner.tscn")
+	else:
+		get_tree().change_scene_to_file("res://Scenes/Store.tscn")

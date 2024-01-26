@@ -1,7 +1,36 @@
-[gd_scene load_steps=4 format=3 uid="uid://c38lkhbyw1kkm"]
+[gd_scene load_steps=8 format=3 uid="uid://c38lkhbyw1kkm"]
 
 [ext_resource type="Script" path="res://Scripts/Bullet.gd" id="1_48ywx"]
-[ext_resource type="Texture2D" uid="uid://co05a76a8cdq2" path="res://icon.svg" id="2_x5ssk"]
+[ext_resource type="Texture2D" uid="uid://bnqa3m8om555y" path="res://Art/Bullet-Sheet.png" id="2_ogmnt"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yegsp"]
+atlas = ExtResource("2_ogmnt")
+region = Rect2(1, 1, 4, 17)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t2nqw"]
+atlas = ExtResource("2_ogmnt")
+region = Rect2(7, 1, 4, 17)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v7u35"]
+atlas = ExtResource("2_ogmnt")
+region = Rect2(13, 1, 4, 17)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ugaav"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yegsp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t2nqw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v7u35")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_i28pp"]
 radius = 4.0
@@ -12,12 +41,10 @@ collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_48ywx")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-self_modulate = Color(0.819608, 0, 0, 1)
-position = Vector2(-3.57628e-07, -2.98023e-07)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
 rotation = 1.5708
-scale = Vector2(0.0625, 0.125)
-texture = ExtResource("2_x5ssk")
+sprite_frames = SubResource("SpriteFrames_ugaav")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708

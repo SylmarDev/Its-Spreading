@@ -23,6 +23,8 @@ func _ready():
 
 # shoot a bullet
 func shootBullet():
+	if get_parent().dead:
+		return
 	gunReady = false
 	gunCooldown = defaultGunCooldown
 	
