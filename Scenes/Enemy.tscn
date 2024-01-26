@@ -116,4 +116,4 @@ shape = SubResource("RectangleShape2D_e2wjw")
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_6eyyi")
 animation = &"walk"
-frame_progress = 0.440487
+frame_progress = 0.159662
