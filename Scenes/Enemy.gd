@@ -18,8 +18,10 @@ var luckyPunch: bool = global.playerUpgrades.any(func(n): return n[0] == "LuckyP
 var luckyPunchChance = 7.5
 
 func getMovementDir() -> Vector2:
-	return position.direction_to(player.getPosition())
-
+	if player != null:
+		return position.direction_to(player.getPosition())
+	return Vector2(0, 0)
+	
 func _ready() -> void:
 	$AnimatedSprite2D.play("walk")
 	
@@ -30,7 +32,7 @@ func _physics_process(delta):
 		velocity = velocity.limit_length(MAX_SPEED)
 		
 		move_and_slide()
-		$AnimatedSprite2D.flip_h = axis.x < 0;
+		$AnimatedSprite2D.flip_h = axis.x < 0
 	else:
 		isActiveTimer += 1
 		if isActiveTimer > disabledFrames:
@@ -47,9 +49,8 @@ func hitBy(projectile) -> void:
 func die() -> void:
 	if not dead:
 		dead = true
+		get_parent().createDeathParticleEffect(global_position)
 		get_parent().playDeathSound(global_position)
 		isActive = false
 		isActiveTimer = -999
 		queue_free()
-	
-	

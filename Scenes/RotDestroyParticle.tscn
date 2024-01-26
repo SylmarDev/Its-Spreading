@@ -1,0 +1,54 @@
+[gd_scene load_steps=9 format=3 uid="uid://dc2qxmxm5u55k"]
+
+[ext_resource type="Script" path="res://Scripts/EnemyDeathParticle.gd" id="1_trkgi"]
+
+[sub_resource type="Gradient" id="Gradient_s53lo"]
+offsets = PackedFloat32Array(0.523256, 0.98062)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_n4dxn"]
+gradient = SubResource("Gradient_s53lo")
+
+[sub_resource type="Curve" id="Curve_5rd32"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.786713, 0.935369), 0.0, 0.0, 0, 0, Vector2(1, 0.0213069), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_fhgbm"]
+curve = SubResource("Curve_5rd32")
+
+[sub_resource type="Curve" id="Curve_nmrnl"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_u5w7c"]
+curve = SubResource("Curve_nmrnl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_efshq"]
+lifetime_randomness = 0.5
+particle_flag_disable_z = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 1.0
+emission_ring_inner_radius = 0.0
+inherit_velocity_ratio = 0.5
+spread = 180.0
+radial_velocity_min = 25.0
+radial_velocity_max = 100.0
+radial_velocity_curve = SubResource("CurveTexture_fhgbm")
+gravity = Vector3(0, 0, 0)
+scale_min = 2.0
+scale_max = 6.0
+scale_curve = SubResource("CurveTexture_u5w7c")
+color_ramp = SubResource("GradientTexture1D_n4dxn")
+
+[node name="GPUParticles2D" type="GPUParticles2D"]
+modulate = Color(0.0784314, 0.0941176, 0.180392, 1)
+emitting = false
+amount = 10
+process_material = SubResource("ParticleProcessMaterial_efshq")
+one_shot = true
+speed_scale = 2.0
+explosiveness = 1.0
+fixed_fps = 60
+script = ExtResource("1_trkgi")

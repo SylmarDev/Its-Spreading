@@ -1,10 +1,16 @@
 extends Control
 
+@onready var titleTheme = $TitleTheme
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	global.setDefaults()
 	$VBoxContainer/Start.grab_focus()
+	
+func _process(delta):
+	if (!titleTheme.playing):
+		titleTheme.playing = true
 
 
 func _on_start_pressed():

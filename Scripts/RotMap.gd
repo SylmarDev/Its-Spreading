@@ -14,6 +14,8 @@ var rotDim: Vector2 = Vector2(8, 8) # hardcoded for now sue me (Idk if we can ge
 var timer = 0
 var timerRuns = 120 # how many frames the timer waits before running to spread
 
+var chance: float
+
 var needsResetEdges: bool = false
 
 @onready var audioStreamPlayer = $AudioStreamPlayer
@@ -27,6 +29,12 @@ var stopLevelRotations = 0
 var stopLevelAfter = global.stageTimer[global.currentStage]
 
 @onready var countdown = get_node("../CanvasLayer/Countdown")
+
+@onready var rotDestroyParticle = preload("res://Scenes/RotDestroyParticle.tscn")
+@onready var shipExplosionParticle = preload("res://Scenes/ShipDestroyParticle.tscn")
+@onready var explosionSfx = $PlayerExplosion
+
+@onready var youLose = preload("res://Scenes/YouLose.tscn")
 
 func getArrayPlusY(arr: Array, yVal: int) -> Array:
 	var returnArr = []
@@ -137,6 +145,10 @@ func _ready():
 	
 	#endregion
 	
+	# set chance
+	chance = global.rotRate[global.currentStage]
+	#print("chance: %s" % str(chance)) #DEBUG
+	
 	# audio stream player
 	audioStreamPlayer.autoplay = true
 	audioStreamPlayer.volume_db = volumeTo
@@ -200,7 +212,7 @@ func spreadRot() -> void:
 	var q = 0
 	var spreadRotTo = [] # arr of Vector2's that will get rot (ROT GRID NOT COORDS)
 	var percentToCheck = 2.0 # 20%
-	var chance = 3
+	
 	
 	#region Determine where rot goes
 	while i < len(rotTiles):
@@ -226,23 +238,23 @@ func spreadRot() -> void:
 			if i != 0 and i != len(rotTiles)-1:
 				# check left
 				if q != 0 and rotTiles[i][q-1] == null:
-					if randi_range(0, 10) < chance:
+					if randf_range(0, 10) < chance:
 						spreadRotTo.append(Vector2i(i, q-1))
 						
 				# check right
 				if q != len(rotTiles[i])-1 and rotTiles[i][q+1] == null:
-					if randi_range(0, 10) < chance:
+					if randf_range(0, 10) < chance:
 						spreadRotTo.append(Vector2i(i, q+1))
 			
 			if q != 0 and q != len(rotTiles[i])-1:
 				# check up
 				if i != 0 and rotTiles[i-1][q] == null:
-					if randi_range(0, 10) < chance:
+					if randf_range(0, 10) < chance:
 						spreadRotTo.append(Vector2i(i-1, q))
 				
 				# check down
 				if i != len(rotTiles)-1 and rotTiles[i+1][q] == null:
-					if randi_range(0, 10) < chance:
+					if randf_range(0, 10) < chance:
 						spreadRotTo.append(Vector2i(i+1, q))
 			
 			
@@ -288,16 +300,31 @@ func deleteRotAtCoords(x: int, y: int) -> void:
 	#print("x: %s y: %s" % [str(x), str(y)])
 	if (x == 0 or y == 0 or x == len(rotTiles)-1 or y == len(rotTiles)-1):
 		needsResetEdges = true
+		
+func createRotParticle(pos: Vector2) -> void:
+	var rotParticle = rotDestroyParticle.instantiate()
+	rotParticle.position = pos
+	rotParticle.emitting = true
+	add_child(rotParticle)
+	
+func destroyShip(pos: Vector2):
+	explosionSfx.playing = true
+	
+	var shipExplosion = shipExplosionParticle.instantiate()
+	shipExplosion.position = pos
+	shipExplosion.emitting = true
+	add_child(shipExplosion)
+	endGameLoop("")
 
 # set volumeTo
-func setVolumeTo(playerRotCount: int) -> void:
-	playerRotCount = clamp(playerRotCount, 0, 50)
-	#  -25 to 0 db
-	volumeTo = ((playerRotCount / 50) * 25) - 25
+func setVolumeTo(volume: float) -> void:
+	audioStreamPlayer.volume_db = volume
 	
 func countdownTimer() -> void:
 	var currentTime = countdown.text
-	if currentTime.ends_with("00"):
+	if currentTime == "0:00":
+		return
+	elif currentTime.ends_with("00"):
 		countdown.text = "%s:59" % str(int(currentTime.split(":")[0])-1)
 	else:
 		var minutes = currentTime.split(":")[0]
@@ -305,20 +332,33 @@ func countdownTimer() -> void:
 		if len(seconds) == 1:
 			seconds = "0%s" % seconds
 		countdown.text = "%s:%s" % [minutes, seconds]
+		
+func endGameLoop(dest: String) -> void:
+	global.setDefaults()
+	if dest.contains("Winner"):
+		get_tree().change_scene_to_file(dest)
+	else:
+		var yl = youLose.instantiate()
+		var camera = get_parent().get_node("CameraFollow").get_node("Camera2D")
+		var center = camera.get_screen_center_position()
+		var offset = camera.offset
+		yl.position = center + offset
+		get_parent().add_child(yl)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	timer += 1
 	
 	# audio
-	audioStreamPlayer.volume_db = lerp(audioStreamPlayer.volume_db, volumeTo, 0.7)
-	setVolumeTo(player.rotCount())
+	if player != null:
+		setVolumeTo(- ((player.rotDistance() - 200) * 0.1) - 20)
+		
 	if (!audioStreamPlayer.playing):
 		audioStreamPlayer.playing = true
 	
 	fillRot()
 	
-	if (timer != timerRuns and fmod(timer, 60) == 0):
+	if (fmod(timer, 60) == 0):
 		countdownTimer()
 	
 	if (!stopLevel) and timer > timerRuns:
@@ -330,13 +370,12 @@ func _process(delta):
 		
 		#print("%s/%s" % [debugTimerRotations, debugStopSpreadingAfter])
 		stopLevelRotations += 1
-		if (stopLevelRotations > stopLevelAfter):
+		if (stopLevelRotations > stopLevelAfter and player != null):
 			global.currentStage += 1
 			# end game if applicable
 			if global.currentStage >= len(global.stageTimer):
 				# end game
-				global.setDefaults()
-				get_tree().change_scene_to_file("res://Scenes/Winner.tscn")
+				endGameLoop("res://Scenes/Winner.tscn")
 			else:
 				get_tree().change_scene_to_file("res://Scenes/Store.tscn")
 		

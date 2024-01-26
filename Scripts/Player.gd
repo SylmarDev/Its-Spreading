@@ -45,11 +45,11 @@ func _ready() -> void:
 				gun2.startPos = twoGunLocations[1]
 				gun2.defaultGunCooldown = gun.defaultGunCooldown
 				add_child(gun2)
-			"EnchanedThrusters":
+			"EnhancedThrusters":
 				MAX_SPEED = 200
 				ACCEL = 300
+				friction = 250
 			"Overclocker":
-				# TODO: make work with addt weapon
 				gun.defaultGunCooldown /= 2
 				if gun2 != null:
 					gun2.defaultGunCooldown = gun.defaultGunCooldown
@@ -122,12 +122,12 @@ func normalizeAngle(a: float) -> float:
 	
 	return fmod(a, 360.0)
 
-func rotCount() -> int:
-	var rotCount = 0
+func rotDistance() -> int:
+	var rotDist = 200
 	for area in hearing.get_overlapping_areas():
-		if (area.has_method("isRot")):
-			rotCount += 1
-	return rotCount
+		if (area.has_method("isRot") and area.position.distance_to(self.position) < rotDist):
+			rotDist = area.position.distance_to(self.position)
+	return rotDist
 	
 func getPosition() -> Vector2:
 	return global_position
@@ -157,7 +157,9 @@ func die() -> void:
 		secondChance = false
 		invincible = true
 		return
-	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
+	get_parent().get_node("RotMap").destroyShip(global_position)
+	queue_free()
+	
 	
 func isInvincible() -> bool:
 	return invincible

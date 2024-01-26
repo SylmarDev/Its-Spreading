@@ -110,7 +110,6 @@ horizontal_alignment = 1
 script = ExtResource("6_o71sc")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Enemies"]
-volume_db = -5.0
 
 [node name="Area2D" type="Area2D" parent="Enemies/AudioStreamPlayer2D"]
 visible = false

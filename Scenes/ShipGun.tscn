@@ -19,4 +19,4 @@ position = Vector2(1.68373e-05, -52.9655)
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_ytcp3")
-volume_db = -10.0
+volume_db = -15.0
