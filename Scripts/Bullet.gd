@@ -12,10 +12,7 @@ var damage: float = 1.0
 
 func _ready():
 	set_as_top_level(true)
-	sprite = $Sprite2D
-	sprite_width = sprite.texture.get_width()
-	
-	#scale.x = max(1, speed / sprite_width)
+	$AnimatedSprite2D.play("default")
 
 func _physics_process(delta):
 	position += (Vector2.RIGHT * speed).rotated(rotation) * delta

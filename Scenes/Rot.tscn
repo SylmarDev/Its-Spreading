@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://c615o4buyjjii"]
+[gd_scene load_steps=3 format=3 uid="uid://c615o4buyjjii"]
 
 [ext_resource type="Script" path="res://Scripts/Rot.gd" id="1_vtuyo"]
-[ext_resource type="Texture2D" uid="uid://co05a76a8cdq2" path="res://icon.svg" id="2_nehme"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2i5ta"]
 size = Vector2(8, 8)
@@ -13,11 +12,5 @@ script = ExtResource("1_vtuyo")
 visible = false
 shape = SubResource("RectangleShape2D_2i5ta")
 debug_color = Color(0.819608, 0, 0.956863, 0.419608)
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-visible = false
-self_modulate = Color(0.737255, 0, 0.737255, 0.568627)
-scale = Vector2(0.0618896, 0.0618896)
-texture = ExtResource("2_nehme")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
