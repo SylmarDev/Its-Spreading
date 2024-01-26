@@ -18,8 +18,8 @@ var prevAngle: float
 var shipAngleTo: float = 0.0
 var turnSpeed: float = 0.05 # float between 0 and 1 iirc
 
-var MAX_HEALTH = 100.0
-var health = 100.0
+var MAX_HEALTH = 50
+var health = MAX_HEALTH
 
 var healthbar
 

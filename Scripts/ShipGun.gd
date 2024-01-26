@@ -23,7 +23,7 @@ func _ready():
 
 # shoot a bullet
 func shootBullet():
-	if get_parent().dead:
+	if get_parent().dead or global.paused:
 		return
 	gunReady = false
 	gunCooldown = defaultGunCooldown

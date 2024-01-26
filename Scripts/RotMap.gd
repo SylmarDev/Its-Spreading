@@ -376,15 +376,13 @@ func _process(delta):
 			global.currentStage += 1
 			ended = true;
 		timer = 0
-	if !$Timer.is_stopped():
-		get_node("../Player/PointLight2D").energy = $Timer.time_left / 2
-		var val = $Timer.time_left / 2
-		get_node("../CanvasModulate").color = Color(val, val, val)
 	if ended and enemyCount == 0 and $Timer.is_stopped():
 		$Timer.start()
 
 
 func _on_timer_timeout():
+	if !ended:
+		return
 	if global.currentStage >= len(global.stageTimer):
 		# end game
 		endGameLoop("res://Scenes/Winner.tscn")

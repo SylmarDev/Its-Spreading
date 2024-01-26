@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://g4l7rvfg05hk"]
 
-[ext_resource type="Texture2D" path="res://Art/Gun.png" id="2_aifxv"]
+[ext_resource type="Texture2D" uid="uid://dfpb5wdh3nilw" path="res://Art/Gun.png" id="2_aifxv"]
 [ext_resource type="Script" path="res://Scripts/ShipGun.gd" id="2_w0ogd"]
 [ext_resource type="AudioStream" uid="uid://m2x0o4xx2uwg" path="res://Sounds/laser_single_1.wav" id="3_ytcp3"]
 
