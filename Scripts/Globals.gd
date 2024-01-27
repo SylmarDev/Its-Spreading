@@ -4,7 +4,7 @@ var currentStage: int = 0
 var paused: bool = true
 
 # divided by 2 seconds sections
-var stageTimer: Array = [30, 60, 120, 150]
+var stageTimer: Array = [0, 60, 120, 150]
 var rotRate: Array = [3, 3.5, 4, 4.5]
 #var stageTimer: Array = [1, 1, 1, 150] # DEBUG
 
@@ -19,13 +19,13 @@ func setDefaults() -> void:
 	currentStage = 0
 	
 	upgrades = [
-		["ArmorPlating", "Grants additional health to the Ship"],
-		["AddtWeaponPort", "Grants an additional weapon"],
-		["EnhancedThrusters", "Increases base movement speed of the Ship"],
-		["Overclocker", "Increases rate of fire of weapons"],
-		["LuckyPunch", "Chance to insta-kill enemies"],
-		["SecondChance", "If the ship is destroyed, survive on 1 HP"],
-		["ShieldGenerator", "Negate the first damage taken"]
+		["ArmorPlating", load("res://Art/ArmorPlating.png")],
+		["AddtWeaponPort", load("res://Art/AdditionalWeapon.png")],
+		["EnhancedThrusters", load("res://Art/EnhancedThrusters.png")],
+		["Overclocker", load("res://Art/Overclocker.png")],
+		["LuckyPunch", load("res://Art/LuckPunch.png")],
+		["SecondChance", load("res://Art/SecondChance.png")],
+		["ShieldGenerator", load("res://Art/ShieldGen.png")]
 	]
 	
 	playerUpgrades = []

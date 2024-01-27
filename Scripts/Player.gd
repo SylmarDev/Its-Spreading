@@ -84,6 +84,11 @@ func _ready() -> void:
 	gun.startPos = twoGunLocations[0] if hasAdditionalWeaponPort else oneGunLocation
 
 func _physics_process(delta):
+	$Sprite2D.rotation = - rotation
+	if shieldGenerator:
+		$Sprite2D.show()
+	else:
+		$Sprite2D.hide()
 	if (global.paused):
 		return
 	axis = get_input()

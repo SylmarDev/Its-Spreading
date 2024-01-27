@@ -2,13 +2,13 @@
 
 [ext_resource type="Theme" uid="uid://dhqrhfql4mvym" path="res://Art/UI/MainMenu.tres" id="1_a02ms"]
 [ext_resource type="Script" path="res://Scripts/MainMenu.gd" id="1_op2lx"]
-[ext_resource type="Texture2D" uid="uid://i47xw0gr17il" path="res://Art/StartBU.png" id="3_8nh3u"]
+[ext_resource type="Texture2D" path="res://Art/StartBU.png" id="3_8nh3u"]
 [ext_resource type="AudioStream" uid="uid://3fp1xlm3u4e4" path="res://Sounds/title_theme.mp3" id="3_uen5m"]
-[ext_resource type="Texture2D" uid="uid://dg4vabl5s4ggr" path="res://Art/Lancer.png" id="4_lfjbd"]
-[ext_resource type="Texture2D" uid="uid://cdcwgrcu4nlhg" path="res://Art/StartBD.png" id="4_llppa"]
+[ext_resource type="Texture2D" path="res://Art/Lancer.png" id="4_lfjbd"]
+[ext_resource type="Texture2D" path="res://Art/StartBD.png" id="4_llppa"]
 [ext_resource type="Texture2D" uid="uid://daqkneypwa0ce" path="res://Art/2d_lights_and_shadows_neutral_point_light.webp" id="5_u21uj"]
-[ext_resource type="Texture2D" uid="uid://us7dsqaqb5xk" path="res://Art/ExitBU.png" id="5_ynee3"]
-[ext_resource type="Texture2D" uid="uid://lsxhq1fj34e1" path="res://Art/ExitBD.png" id="6_q3ety"]
+[ext_resource type="Texture2D" path="res://Art/ExitBU.png" id="5_ynee3"]
+[ext_resource type="Texture2D" path="res://Art/ExitBD.png" id="6_q3ety"]
 
 [sub_resource type="Theme" id="Theme_vu5kx"]
 
