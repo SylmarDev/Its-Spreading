@@ -10,11 +10,13 @@ config_version=5
 
 [application]
 
-config/name="Its-Spreading"
+config/name="LANCER"
+config/description="LANCER by Lucky Punch"
+config/version="1.0.0"
 run/main_scene="res://Scenes/MainMenu.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 boot_splash/show_image=false
-config/icon="res://icon.svg"
+config/icon="res://Art/Ship.png"
 
 [autoload]
 
@@ -24,6 +26,7 @@ global="*res://Scripts/Globals.gd"
 
 window/size/viewport_width=320
 window/size/viewport_height=180
+window/size/mode=3
 window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="canvas_items"
