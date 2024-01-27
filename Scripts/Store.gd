@@ -3,9 +3,9 @@ extends Control
 var upgrades = []
 var totalUpgradesInShop = 3
 
-@onready var buttons = [$VBoxContainer/Button0,
-						$VBoxContainer/Button1,
-						$VBoxContainer/Button2]
+@onready var buttons = [$HBoxContainer/TextureButton,
+						$HBoxContainer/TextureButton2,
+						$HBoxContainer/TextureButton3]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -17,7 +17,7 @@ func _ready():
 	
 	while i < totalUpgradesInShop:
 		upgrades[i] = shuffled[i]
-		buttons[i].text = "%s\n%s" % [upgrades[i][0], upgrades[i][1]]
+		buttons[i].texture_normal = upgrades[i][1]
 		i += 1
 	
 func buttonPressed(btnNum: int):	
@@ -25,13 +25,12 @@ func buttonPressed(btnNum: int):
 	global.upgrades.erase(upgrades[btnNum])
 	
 	get_tree().change_scene_to_file("res://Scenes/Map.tscn")
-
-
-func _on_button_0_pressed():
+	
+func _on_texture_button_pressed():
 	buttonPressed(0)
 
-func _on_button_1_pressed():
+func _on_texture_button_2_pressed():
 	buttonPressed(1)
 
-func _on_button_2_pressed():
+func _on_texture_button_3_pressed():
 	buttonPressed(2)

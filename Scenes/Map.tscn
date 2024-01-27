@@ -15,7 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://g4f5grerd0b6" path="res://Art/Bar-top.png" id="11_wmps1"]
 [ext_resource type="Texture2D" uid="uid://coy7b7h3q1bo5" path="res://Art/Grass-Sheet.png" id="12_auyum"]
 [ext_resource type="PackedScene" uid="uid://gph1jyjm4av6" path="res://Scenes/YouLose.tscn" id="12_ph0gb"]
-[ext_resource type="AudioStream" uid="uid://cedgrb0bmtlx0" path="res://Sounds/gameplay_music_loop.mp3" id="16_ars3c"]
+[ext_resource type="AudioStream" path="res://Sounds/gameplay_music_loop.mp3" id="16_ars3c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2b7o"]
 size = Vector2(776, 776)

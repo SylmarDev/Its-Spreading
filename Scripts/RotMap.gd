@@ -98,7 +98,6 @@ func createRotArr(iVal: int, size: int, allFilled: bool, bookendsFilled: bool):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	global.paused = true
 	#region Set rotTilesPositions
 	var playableArea2d = get_node("../PlayableArea/CollisionShape2D")
 	playableArea = playableArea2d.shape.size # Vector2 of playing area
