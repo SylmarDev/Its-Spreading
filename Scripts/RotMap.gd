@@ -98,6 +98,7 @@ func createRotArr(iVal: int, size: int, allFilled: bool, bookendsFilled: bool):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	global.paused = true
 	#region Set rotTilesPositions
 	var playableArea2d = get_node("../PlayableArea/CollisionShape2D")
 	playableArea = playableArea2d.shape.size # Vector2 of playing area
@@ -346,6 +347,9 @@ func endGameLoop(dest: String) -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if (global.paused):
+		return
+	
 	timer += 1
 	
 	# audio
@@ -369,19 +373,17 @@ func _process(delta):
 		
 		#print("%s/%s" % [debugTimerRotations, debugStopSpreadingAfter])
 		stopLevelRotations += 1
-		if (stopLevelRotations > stopLevelAfter and player != null):
+		if (stopLevelRotations > stopLevelAfter and !player.dead):
 			global.currentStage += 1
 			ended = true;
 		timer = 0
-	if !$Timer.is_stopped():
-		get_node("../Player/PointLight2D").energy = $Timer.time_left / 2
-		var val = $Timer.time_left / 2
-		get_node("../CanvasModulate").color = Color(val, val, val)
-	if ended and enemyCount == 0 and $Timer.is_stopped():
+	if ended and $Timer.is_stopped():
 		$Timer.start()
 
 
 func _on_timer_timeout():
+	if !ended:
+		return
 	if global.currentStage >= len(global.stageTimer):
 		# end game
 		endGameLoop("res://Scenes/Winner.tscn")

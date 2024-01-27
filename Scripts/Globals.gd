@@ -1,6 +1,7 @@
 extends Node
 
 var currentStage: int = 0
+var paused: bool = true
 
 # divided by 2 seconds sections
 var stageTimer: Array = [30, 60, 120, 150]
@@ -28,3 +29,8 @@ func setDefaults() -> void:
 	]
 	
 	playerUpgrades = []
+	
+func _process(delta):
+	if Input.is_action_just_released("fullscreen"):
+		var mode = DisplayServer.WINDOW_MODE_WINDOWED if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN else DisplayServer.WINDOW_MODE_FULLSCREEN
+		DisplayServer.window_set_mode(mode)

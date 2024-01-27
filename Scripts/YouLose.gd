@@ -1,26 +1,26 @@
 extends Node2D
 
-@onready var trashTalk = $TrashTalk
 var createdAt
-var waitBeforeAcceptingInput = 2000
-
-var helpfulMessages = [
-	"Watch out for the rot. Its spreading",
-	"Its spreading btw",
-	"The shamblers do damage",
-	"Skill Issue",
-	"Its okay, mistakes happen",
-	"Well it wasn't a great attempt anyways",
-	"That's rough buddy"
-]
+var waitBeforeAcceptingInput = 1000
+var clicked = false;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	trashTalk.text = helpfulMessages[randi() % helpfulMessages.size()]
+	get_node("Message" + str((randi() % 7) + 1)).show()
 	
 func create():
 	createdAt = Time.get_ticks_msec()
+	
+func _process(delta):
+	if createdAt != null and Time.get_ticks_msec() - createdAt > waitBeforeAcceptingInput:
+		$TextureButton.show()
 
-func _input(event):
-	if visible and Time.get_ticks_msec() - createdAt > waitBeforeAcceptingInput and event is InputEventKey:
+func _on_timer_timeout():
+	if clicked:
 		get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
+
+
+func _on_texture_button_pressed():
+	if visible and Time.get_ticks_msec() - createdAt > waitBeforeAcceptingInput:
+		get_node("../../RotMap/Timer").start()
+		clicked = true

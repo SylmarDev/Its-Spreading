@@ -2,11 +2,15 @@ extends Node2D
 
 @onready var audioStreamPlayer = $AudioStreamPlayer2D
 @onready var splatterSounds = [
-	preload("res://Sounds/splatter/splatter_1.mp3"),
-	preload("res://Sounds/splatter/splatter_2.mp3"),
-	preload("res://Sounds/splatter/splatter_3.mp3"),
-	preload("res://Sounds/splatter/splatter_4.mp3"),
-	preload("res://Sounds/splatter/splatter_5.mp3")
+	preload("res://Sounds/splatter/splatter1.mp3"),
+	preload("res://Sounds/splatter/splatter2.mp3"),
+	preload("res://Sounds/splatter/splatter3.mp3"),
+	preload("res://Sounds/splatter/splatter4.mp3"),
+	preload("res://Sounds/splatter/splatter5.mp3"),
+	preload("res://Sounds/splatter/splatter6.mp3"),
+	preload("res://Sounds/splatter/splatter7.mp3"),
+	preload("res://Sounds/splatter/splatter8.mp3"),
+	preload("res://Sounds/splatter/splatter9.mp3")
 ]
 
 @onready var deathParticle = preload("res://Scenes/EnemyDeath.tscn")
