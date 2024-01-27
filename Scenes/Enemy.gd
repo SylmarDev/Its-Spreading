@@ -2,7 +2,7 @@ extends CharacterBody2D
 class_name Enemy
 
 var player
-var MAX_HEALTH = 3
+var MAX_HEALTH = 4
 var health = MAX_HEALTH
 var dead: bool = false
 

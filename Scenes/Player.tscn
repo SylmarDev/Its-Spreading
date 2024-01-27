@@ -4,8 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://g4l7rvfg05hk" path="res://Scenes/ShipGun.tscn" id="3_353p8"]
 [ext_resource type="Texture2D" uid="uid://beonq180qnh36" path="res://Art/Ship-Sheet.png" id="3_ubthr"]
 [ext_resource type="Texture2D" uid="uid://daqkneypwa0ce" path="res://Art/2d_lights_and_shadows_neutral_point_light.webp" id="4_tpufn"]
-[ext_resource type="AudioStream" path="res://Sounds/alert_alarm.mp3" id="5_bifvm"]
-[ext_resource type="Texture2D" path="res://Art/Shield.png" id="6_n4vpm"]
+[ext_resource type="AudioStream" uid="uid://phb7q6tlhoii" path="res://Sounds/alert_alarm.mp3" id="5_bifvm"]
+[ext_resource type="Texture2D" uid="uid://cmu6g6r8idgc3" path="res://Art/Shield.png" id="6_n4vpm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2wjw"]
 
@@ -80,6 +80,7 @@ texture_scale = 3.67
 
 [node name="Damage" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_bifvm")
+volume_db = -7.5
 
 [node name="Laser" type="AudioStreamPlayer2D" parent="."]
 volume_db = -10.0

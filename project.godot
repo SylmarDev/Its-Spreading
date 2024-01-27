@@ -17,6 +17,7 @@ run/main_scene="res://Scenes/MainMenu.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 boot_splash/show_image=false
 config/icon="res://Art/Ship.png"
+config/windows_native_icon="res://Art/Ship.ico"
 
 [autoload]
 
