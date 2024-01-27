@@ -376,7 +376,7 @@ func _process(delta):
 			global.currentStage += 1
 			ended = true;
 		timer = 0
-	if ended and enemyCount == 0 and $Timer.is_stopped():
+	if ended and $Timer.is_stopped():
 		$Timer.start()
 
 

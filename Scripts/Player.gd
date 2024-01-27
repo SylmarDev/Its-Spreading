@@ -33,7 +33,24 @@ var shieldGenerator: bool = false
 var invincible: bool = false
 var invincibleCounter: int = 180
 
-var dead = false;
+var dead = false
+
+@onready var damageSfx = $Damage
+@onready var laserPlayer = $Laser
+
+@onready var laserSounds = [
+	preload("res://Sounds/lasers/laser1.mp3"),
+	preload("res://Sounds/lasers/laser2.mp3"),
+	preload("res://Sounds/lasers/laser3.mp3"),
+	preload("res://Sounds/lasers/laser4.mp3")
+]
+
+@onready var twinLaserSounds = [
+	preload("res://Sounds/twinLasers/twin_laser1.mp3"),
+	preload("res://Sounds/twinLasers/twin_laser2.mp3"),
+	preload("res://Sounds/twinLasers/twin_laser3.mp3"),
+	preload("res://Sounds/twinLasers/twin_laser4.mp3")
+]
 
 func _ready() -> void:
 	# set upgrades if applicable
@@ -126,6 +143,13 @@ func normalizeAngle(a: float) -> float:
 		a += 360
 	
 	return fmod(a, 360.0)
+	
+func playLaser(laserPos: Vector2) -> void:
+	var playTwin = global.playerUpgrades.any(func(n): return n[0] == "AddtWeaponPort")
+	var laserList = twinLaserSounds if playTwin else laserSounds
+	laserPlayer.global_position = laserPos
+	laserPlayer.set_stream(laserList[randi_range(0, len(laserList)-1)])
+	laserPlayer.play()
 
 func rotDistance() -> int:
 	var rotDist = 200
@@ -155,14 +179,18 @@ func hurt(damage: float) -> void:
 	healthbar.value = health
 	if health <= 0 and !dead:
 		die()
+		return
 	
+	if !dead and health < MAX_HEALTH * 0.2 and !damageSfx.playing:
+		damageSfx.playing = true
 	
 func die() -> void:
 	if (secondChance):
 		secondChance = false
 		invincible = true
 		return
-	dead = true;
+	dead = true
+	damageSfx.playing = false
 	get_parent().get_node("RotMap").destroyShip(global_position)
 	$AnimatedSprite2D.hide()
 	$ShipGun.hide()
@@ -170,8 +198,3 @@ func die() -> void:
 	
 func isInvincible() -> bool:
 	return invincible
-	
-	
-	
-	
-	

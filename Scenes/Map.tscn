@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://dci5eckwmtjeu"]
+[gd_scene load_steps=63 format=3 uid="uid://dci5eckwmtjeu"]
 
 [ext_resource type="Script" path="res://Scripts/Map.gd" id="1_c3sva"]
 [ext_resource type="PackedScene" uid="uid://ck2k1mk36x578" path="res://Scenes/Player.tscn" id="1_gcw1n"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://g4f5grerd0b6" path="res://Art/Bar-top.png" id="11_wmps1"]
 [ext_resource type="Texture2D" uid="uid://coy7b7h3q1bo5" path="res://Art/Grass-Sheet.png" id="12_auyum"]
 [ext_resource type="PackedScene" uid="uid://gph1jyjm4av6" path="res://Scenes/YouLose.tscn" id="12_ph0gb"]
+[ext_resource type="AudioStream" uid="uid://cedgrb0bmtlx0" path="res://Sounds/gameplay_music_loop.mp3" id="16_ars3c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2b7o"]
 size = Vector2(776, 776)
@@ -441,10 +442,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -81.0
-offset_top = -81.0
-offset_right = 81.0
-offset_bottom = 81.0
+offset_left = -157.0
+offset_top = -79.0
+offset_right = 157.0
+offset_bottom = 85.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -452,9 +453,20 @@ grow_vertical = 2
 layout_mode = 0
 offset_left = 5.0
 offset_top = 5.0
-offset_right = 156.0
-offset_bottom = 123.0
-text = "This is the text that explains stuff"
+offset_right = 311.0
+offset_bottom = 133.0
+theme_override_font_sizes/normal_font_size = 9
+theme_override_font_sizes/bold_font_size = 11
+bbcode_enabled = true
+text = "[b]From: UGF-0891 // To: Codename \"LANCER\"
+TRANSMISSION 109-3473-2[/b]
+\"Hello LANCER! The United Galactic Federation thanks you for your service!
+The Rot is spreading. Hold off for as long as you can. A secondary defense force will relieve you as soon as they are able.
+Godspeed, soldier!\"
+
+WASD to move. Mouse to aim. Left-click to shoot."
+fit_content = true
+scroll_active = false
 
 [node name="Button" type="Button" parent="CanvasLayer/Panel"]
 layout_mode = 1
@@ -463,14 +475,14 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -37.0
-offset_top = -33.0
-offset_right = 38.0
+offset_left = -38.0
+offset_top = -27.0
+offset_right = 39.0
 offset_bottom = -2.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_font_sizes/font_size = 15
-text = "Ok"
+theme_override_font_sizes/font_size = 12
+text = "Understood"
 
 [node name="Enemies" type="Node2D" parent="."]
 script = ExtResource("6_o71sc")
@@ -495,6 +507,10 @@ layer_0/tile_data = PackedInt32Array(-1, 65536, 0, 65535, 65536, 0, 131071, 6553
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0.498039, 0.498039, 0.498039, 1)
+
+[node name="GameplayMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_ars3c")
+volume_db = -20.0
 
 [connection signal="timeout" from="RotMap/Timer" to="RotMap" method="_on_timer_timeout"]
 [connection signal="timeout" from="RotMap/Timer" to="CanvasLayer/YouLose" method="_on_timer_timeout"]
